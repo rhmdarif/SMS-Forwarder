@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Signing keystore — private key, jangan pernah di-commit
+/keystore/
+# Artefak build release dari Android Studio
+/app/release/

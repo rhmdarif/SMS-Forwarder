@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NotifSync - Message History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#f3effc",
+                        "surface-container-low": "#f5f2ff",
+                        "background": "#fcf8ff",
+                        "tertiary": "#7e3000",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "on-surface-variant": "#464555",
+                        "primary": "#3525cd",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#dad7ff",
+                        "on-secondary-fixed-variant": "#2f2ebe",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#dcd8e5",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#e2dfff",
+                        "on-background": "#1b1b24",
+                        "secondary-fixed": "#e1e0ff",
+                        "tertiary-container": "#a44100",
+                        "on-primary-fixed": "#0f0069",
+                        "surface-variant": "#e4e1ee",
+                        "inverse-primary": "#c3c0ff",
+                        "surface-container-high": "#eae6f4",
+                        "on-tertiary-fixed": "#351000",
+                        "surface-container": "#f0ecf9",
+                        "primary-container": "#4f46e5",
+                        "outline-variant": "#c7c4d8",
+                        "surface": "#fcf8ff",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1b1b24",
+                        "secondary-fixed-dim": "#c0c1ff",
+                        "on-secondary-container": "#fffbff",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "secondary-container": "#6063ee",
+                        "tertiary-fixed": "#ffdbcc",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e4e1ee",
+                        "inverse-surface": "#302f39",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "outline": "#777587",
+                        "on-tertiary-container": "#ffd2be",
+                        "on-secondary-fixed": "#07006c",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "surface-tint": "#4d44e3",
+                        "secondary": "#4648d4",
+                        "surface-bright": "#fcf8ff",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "max-width": "1280px",
+                        "gutter": "16px",
+                        "margin-desktop": "48px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "unit": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24">
+<!-- TopAppBar Component -->
+<header class="flex justify-between items-center w-full px-4 h-16 sticky top-0 z-40 bg-background dark:bg-background shadow-sm dark:shadow-none">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+<h1 class="font-headline-md text-headline-md font-bold tracking-tight text-primary dark:text-inverse-primary">NotifSync</h1>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200">
+<span class="material-symbols-outlined text-primary dark:text-inverse-primary" data-icon="sync">sync</span>
+</button>
+</header>
+<main class="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-md space-y-md">
+<!-- Stats Dashboard Section -->
+<section class="bg-inverse-surface rounded-xl p-lg text-inverse-on-surface shadow-lg">
+<div class="flex justify-between items-center mb-xl">
+<h2 class="font-headline-lg text-headline-lg">Message History</h2>
+<div class="flex gap-sm">
+<button class="p-sm hover:bg-surface-variant/20 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="p-sm hover:bg-surface-variant/20 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-xs text-center">
+<div class="flex flex-col">
+<span class="font-display text-display font-bold">142</span>
+<span class="font-label-sm text-label-sm opacity-80 uppercase tracking-wider">Total</span>
+</div>
+<div class="flex flex-col border-l border-outline-variant/20">
+<span class="font-display text-display font-bold">128</span>
+<span class="font-label-sm text-label-sm opacity-80 uppercase tracking-wider">Matched</span>
+</div>
+<div class="flex flex-col border-l border-outline-variant/20">
+<span class="font-display text-display font-bold">124</span>
+<span class="font-label-sm text-label-sm opacity-80 uppercase tracking-wider">Success</span>
+</div>
+<div class="flex flex-col border-l border-outline-variant/20">
+<span class="font-display text-display font-bold text-error-container">4</span>
+<span class="font-label-sm text-label-sm opacity-80 uppercase tracking-wider">Failed</span>
+</div>
+</div>
+</section>
+<!-- Search Bar Section -->
+<section class="relative">
+<div class="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
+</div>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 pl-11 pr-md font-body-md focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="Search messages, apps..." type="text"/>
+</section>
+<!-- Notification List Section -->
+<section class="space-y-sm">
+<h3 class="font-label-lg text-label-lg text-on-surface-variant ml-xs mb-sm">Recent Activity</h3>
+<!-- Notification Card: WhatsApp -->
+<div class="group bg-surface-container-lowest p-md rounded-xl border border-outline-variant flex items-start gap-md hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+<img alt="App Icon" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW_pjgT77llTkE3LjumS8XMGq9EwkPXKwkHoHAfYk4Jkx8VrMb65P8t-I5_hrThtrH53kGCqvQle_SAOS6Hb1oiuSVtqwfVHXdtHMlTgfSQs-61qCqqJVQkGU6i_qGY59rTbVtBrIqAKw5zFJM3bHgNyWgLFCc31t9Gtwntj2KFUaqGKbxP2MdIfkdXdgmDMLTNz13k4HWO5s_lkMM5XI0FfNCJHo_DhkyJohVgpBXLnM8xgfvDKcYsz78eRFKtPx40HF7KNcWRDSA"/>
+</div>
+<div class="flex-grow min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-label-lg text-label-lg text-on-surface truncate">WhatsApp</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2m ago</span>
+</div>
+<p class="font-body-md text-on-surface-variant mt-xs line-clamp-1">John Doe: "Hey, are we still meeting today at the library?"</p>
+<div class="mt-sm flex items-center gap-xs">
+<span class="px-2 py-0.5 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase">Success</span>
+<span class="font-label-sm text-label-sm text-outline">• Sync Rule #4</span>
+</div>
+</div>
+</div>
+<!-- Notification Card: Gmail -->
+<div class="group bg-surface-container-lowest p-md rounded-xl border border-outline-variant flex items-start gap-md hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0">
+<img alt="App Icon" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUeaPm971gxFvyK8ZjMZK120hX75N_5JdG0r9NeF0iWyD7UZ-Cn1sDbzOPzw3oTBnRX63GEdMOS81XYXtyOmOaF5rxELJrnT56MTbRqyjP9sFo_lRf2lmVTNE5bpRyAQmpeIlmgzMK2Pcy0-hlm9UnJyMjMDxwxb0luFF0WPPTIet7AIz4wAxtIzIwVrr2nYlmZJgA9L2cEPS-Aa8Q3yjkUKURHukIWv4u8GEAsh4yhTht_yeCYDWTF_a6IB8tCarb7jqUJXR5DPBg"/>
+</div>
+<div class="flex-grow min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-label-lg text-label-lg text-on-surface truncate">Gmail</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">15m ago</span>
+</div>
+<p class="font-body-md text-on-surface-variant mt-xs line-clamp-1">Security Alert: New sign-in detected on your account.</p>
+<div class="mt-sm flex items-center gap-xs">
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-primary text-[10px] font-bold uppercase">Matched</span>
+<span class="font-label-sm text-label-sm text-outline">• Forwarding active</span>
+</div>
+</div>
+</div>
+<!-- Notification Card: SMS -->
+<div class="group bg-surface-container-lowest p-md rounded-xl border border-outline-variant flex items-start gap-md hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+<div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+<img alt="App Icon" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRI1i1p4l9hort5g4HRPLpoFNw5BngI_gptNKWSCWkRbsU-VvJcyD-0RQDY9wwtR0Xwp3EsdVfBje7uT7UtcinEgmn19FUjvla0mscjTin1q8y8-WDyOQLTjL9zNJT438qn8EHnw6rCw7k0uoI-FsikG9algsWa3C9dQ2q8DgPNofWCWkR7J4wqXhKHCYUES56xQjvvRc6jyeXWXJEENJYDoxpFSqZelnjsrPAYgDTGKIe_TdXwDG96NTkO25jR0zH-ek7q6btOLjQ"/>
+</div>
+<div class="flex-grow min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-label-lg text-label-lg text-on-surface truncate">SMS Messages</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">1h ago</span>
+</div>
+<p class="font-body-md text-on-surface-variant mt-xs line-clamp-1">Your verification code is 884920.</p>
+<div class="mt-sm flex items-center gap-xs">
+<span class="px-2 py-0.5 rounded-full bg-error-container text-error text-[10px] font-bold uppercase">Failed</span>
+<span class="font-label-sm text-label-sm text-error">Destination unreachable</span>
+</div>
+</div>
+</div>
+<!-- Empty State (Hidden by default in this preview, but kept for logic) -->
+<div class="hidden flex flex-col items-center justify-center py-xl px-lg text-center bg-surface-container-low rounded-3xl border-2 border-dashed border-outline-variant">
+<div class="w-20 h-20 rounded-full bg-surface-variant flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-outline text-[40px]" data-icon="mail">mail</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-surface">No Messages Yet</h4>
+<p class="font-body-md text-on-surface-variant mt-sm max-w-xs">
+                    SMS messages and notifications will appear here once rules are triggered. Send a test SMS to start.
+                </p>
+<button class="mt-lg bg-primary text-on-primary px-lg py-md rounded-full font-label-lg hover:shadow-lg active:scale-95 transition-all">
+                    Send Test Signal
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Component -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center py-2 px-4 bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant">
+<!-- Rules -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-6 py-1 hover:text-primary dark:hover:text-inverse-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-md text-label-md">Rules</span>
+</a>
+<!-- History (ACTIVE) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-6 py-1 Active: scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="history" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<!-- Settings -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-6 py-1 hover:text-primary dark:hover:text-inverse-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</body></html>

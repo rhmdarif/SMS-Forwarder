@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "inverse-on-surface": "#f3effc",
+                  "surface-container-low": "#f5f2ff",
+                  "background": "#fcf8ff",
+                  "tertiary": "#7e3000",
+                  "on-tertiary-fixed-variant": "#7b2f00",
+                  "on-surface-variant": "#464555",
+                  "primary": "#3525cd",
+                  "on-secondary": "#ffffff",
+                  "on-primary-container": "#dad7ff",
+                  "on-secondary-fixed-variant": "#2f2ebe",
+                  "on-error": "#ffffff",
+                  "on-error-container": "#93000a",
+                  "surface-dim": "#dcd8e5",
+                  "error": "#ba1a1a",
+                  "primary-fixed": "#e2dfff",
+                  "on-background": "#1b1b24",
+                  "secondary-fixed": "#e1e0ff",
+                  "tertiary-container": "#a44100",
+                  "on-primary-fixed": "#0f0069",
+                  "surface-variant": "#e4e1ee",
+                  "inverse-primary": "#c3c0ff",
+                  "surface-container-high": "#eae6f4",
+                  "on-tertiary-fixed": "#351000",
+                  "surface-container": "#f0ecf9",
+                  "primary-container": "#4f46e5",
+                  "outline-variant": "#c7c4d8",
+                  "surface": "#fcf8ff",
+                  "on-tertiary": "#ffffff",
+                  "error-container": "#ffdad6",
+                  "on-surface": "#1b1b24",
+                  "secondary-fixed-dim": "#c0c1ff",
+                  "on-secondary-container": "#fffbff",
+                  "primary-fixed-dim": "#c3c0ff",
+                  "secondary-container": "#6063ee",
+                  "tertiary-fixed": "#ffdbcc",
+                  "on-primary": "#ffffff",
+                  "surface-container-highest": "#e4e1ee",
+                  "inverse-surface": "#302f39",
+                  "tertiary-fixed-dim": "#ffb695",
+                  "outline": "#777587",
+                  "on-tertiary-container": "#ffd2be",
+                  "on-secondary-fixed": "#07006c",
+                  "on-primary-fixed-variant": "#3323cc",
+                  "surface-tint": "#4d44e3",
+                  "secondary": "#4648d4",
+                  "surface-bright": "#fcf8ff",
+                  "surface-container-lowest": "#ffffff"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "md": "16px",
+                  "max-width": "1280px",
+                  "gutter": "16px",
+                  "margin-desktop": "48px",
+                  "sm": "8px",
+                  "xs": "4px",
+                  "lg": "24px",
+                  "xl": "32px",
+                  "unit": "4px",
+                  "margin-mobile": "16px"
+          },
+          "fontFamily": {
+                  "body-lg": ["Inter"],
+                  "label-lg": ["Inter"],
+                  "body-md": ["Inter"],
+                  "headline-lg": ["Inter"],
+                  "label-md": ["Inter"],
+                  "headline-md": ["Inter"],
+                  "display": ["Inter"],
+                  "label-sm": ["Inter"]
+          },
+          "fontSize": {
+                  "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                  "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                  "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                  "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                  "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                  "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                  "display": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body {
+      background-color: #fcf8ff;
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-4 h-16 sticky top-0 z-40 bg-background dark:bg-background shadow-sm dark:shadow-none">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-container text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+</div>
+<h1 class="font-display text-display font-bold text-primary dark:text-inverse-primary tracking-tight">NotifSync</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-full hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="sync">sync</span>
+</button>
+</div>
+</header>
+<main class="flex-grow max-w-max-width mx-auto w-full px-4 py-6 mb-24">
+<!-- Hero Section / Statistics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md mb-xl">
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm flex flex-col justify-between">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Active Rules</p>
+<p class="font-display text-display text-primary mt-xs">08</p>
+</div>
+<div class="mt-md text-primary flex items-center gap-1 font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span>
+<span>+2 this month</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm md:col-span-2 relative overflow-hidden">
+<div class="relative z-10">
+<h2 class="font-headline-md text-headline-md mb-xs">Optimization Tip</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Syncing your Rules with Discord Webhooks can reduce notification latency by up to 40%.</p>
+<button class="mt-md bg-secondary text-on-secondary px-4 py-2 rounded-lg font-label-lg text-label-lg hover:opacity-90 transition-opacity">Learn more</button>
+</div>
+<div class="absolute right-0 bottom-0 opacity-10">
+<span class="material-symbols-outlined text-[120px]" data-icon="auto_awesome">auto_awesome</span>
+</div>
+</div>
+</div>
+<!-- Active Rules List -->
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-md text-headline-md">Active Rules</h3>
+<button class="text-primary font-label-lg text-label-lg flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
+        Filter
+      </button>
+</div>
+<!-- Rules Bento-ish Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Rule Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm group hover:border-primary transition-colors duration-300 relative">
+<div class="absolute left-0 top-1/4 bottom-1/4 w-1 bg-primary rounded-r-full"></div>
+<div class="flex justify-between items-start mb-md">
+<div class="flex gap-md items-center">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[28px]" data-icon="mail">mail</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg">Forward SMS to Email</h4>
+<p class="font-label-md text-label-md text-on-surface-variant">Twilio • Gmail API</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-md pt-md border-t border-surface-container">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Target: admin@company.com</span>
+</div>
+</div>
+<!-- Rule Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm group hover:border-primary transition-colors duration-300 relative">
+<div class="absolute left-0 top-1/4 bottom-1/4 w-1 bg-primary rounded-r-full"></div>
+<div class="flex justify-between items-start mb-md">
+<div class="flex gap-md items-center">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[28px]" data-icon="webhook">webhook</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg">Discord to Webhook</h4>
+<p class="font-label-md text-label-md text-on-surface-variant">Discord • Custom Endpoint</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-md pt-md border-t border-surface-container">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Target: api.internal/hooks/v1</span>
+</div>
+</div>
+<!-- Rule Card 3 (Inactive) -->
+<div class="bg-surface-container border border-outline-variant p-md rounded-xl shadow-sm group hover:border-outline transition-colors duration-300 relative opacity-70">
+<div class="flex justify-between items-start mb-md">
+<div class="flex gap-md items-center">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[28px]" data-icon="notifications_active">notifications_active</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg">Slack Critical Alerts</h4>
+<p class="font-label-md text-label-md text-on-surface-variant">Slack • Push Notification</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-md pt-md border-t border-surface-container-high">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Target: Mobile Device (Android)</span>
+</div>
+</div>
+<!-- Rule Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm group hover:border-primary transition-colors duration-300 relative">
+<div class="absolute left-0 top-1/4 bottom-1/4 w-1 bg-primary rounded-r-full"></div>
+<div class="flex justify-between items-start mb-md">
+<div class="flex gap-md items-center">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[28px]" data-icon="database">database</span>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg">Log Sync to DB</h4>
+<p class="font-label-md text-label-md text-on-surface-variant">System • PostgreSQL</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-md pt-md border-t border-surface-container">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Target: prod_logs_db</span>
+</div>
+</div>
+</div>
+<!-- Secondary Info Area -->
+<div class="mt-xl grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="bg-surface-container-low p-md rounded-xl border border-dashed border-outline-variant flex flex-col items-center justify-center text-center py-xl">
+<span class="material-symbols-outlined text-outline text-[48px] mb-md" data-icon="cloud_off">cloud_off</span>
+<h5 class="font-headline-md text-headline-md text-on-surface-variant">Recent Failures</h5>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">No failed rule executions in the last 24 hours.</p>
+</div>
+<div class="p-md">
+<h5 class="font-label-lg text-label-lg mb-md">Quick Analytics</h5>
+<div class="space-y-md">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Daily Throughput</span>
+<span class="font-label-lg text-label-lg">1.2k events</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full w-3/4"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Avg. Latency</span>
+<span class="font-label-lg text-label-lg">42ms</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5">
+<div class="bg-secondary h-1.5 rounded-full w-1/4"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB -->
+<button class="fixed bottom-24 right-4 md:right-8 bg-primary text-on-primary w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center active:scale-95 transition-transform z-50">
+<span class="material-symbols-outlined text-[28px]" data-icon="add">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center py-2 px-4 bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant">
+<!-- Active State: Rules -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-6 py-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="gavel" style="font-variation-settings: 'FILL' 1;">gavel</span>
+<span class="font-label-md text-label-md">Rules</span>
+</a>
+<!-- Inactive State: History -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-6 py-1 hover:text-primary dark:hover:text-inverse-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<!-- Inactive State: Settings -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-6 py-1 hover:text-primary dark:hover:text-inverse-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+</body></html>

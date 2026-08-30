@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#bfc8ce",
+                    "surface-tint": "#0053db",
+                    "surface": "#f9f9ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#e9f2f8",
+                    "on-tertiary-fixed": "#141d21",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "outline-variant": "#c3c6d7",
+                    "surface-variant": "#d8e3fb",
+                    "surface-container-highest": "#d8e3fb",
+                    "on-secondary-container": "#576676",
+                    "primary-fixed": "#dbe1ff",
+                    "on-secondary-fixed": "#0e1d2b",
+                    "on-surface": "#111c2d",
+                    "secondary-fixed-dim": "#b9c8db",
+                    "on-primary-fixed": "#00174b",
+                    "surface-container-low": "#f0f3ff",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#3f484d",
+                    "primary-container": "#2563eb",
+                    "on-background": "#111c2d",
+                    "inverse-on-surface": "#ecf1ff",
+                    "tertiary": "#4e565b",
+                    "primary": "#004ac6",
+                    "surface-dim": "#cfdaf2",
+                    "surface-container": "#e7eeff",
+                    "on-surface-variant": "#434655",
+                    "secondary-container": "#d5e4f8",
+                    "surface-bright": "#f9f9ff",
+                    "on-secondary-fixed-variant": "#3a4858",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "secondary": "#516070",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#dee8ff",
+                    "tertiary-container": "#666f74",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#dbe4ea",
+                    "outline": "#737686",
+                    "background": "#f9f9ff",
+                    "secondary-fixed": "#d5e4f8",
+                    "on-primary": "#ffffff",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "inverse-primary": "#b4c5ff",
+                    "on-primary-container": "#eeefff",
+                    "on-tertiary": "#ffffff",
+                    "inverse-surface": "#263143"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "xs": "4px",
+                    "container-max": "1200px",
+                    "sm": "12px",
+                    "gutter": "24px",
+                    "md": "24px",
+                    "xl": "64px",
+                    "lg": "40px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-surface border-b border-outline-variant transition-colors">
+<div class="flex justify-between items-center px-gutter py-sm max-w-container-max mx-auto">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-headline-md" data-icon="sync_saved_locally">sync_saved_locally</span>
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight">SyncSafe</h1>
+</div>
+<button class="active:scale-95 transition-transform duration-200 hover:bg-surface-container-low p-2 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="cloud_done">cloud_done</span>
+</button>
+</div>
+</header>
+<main class="flex-grow max-w-container-max mx-auto w-full px-gutter pt-lg pb-xl">
+<!-- Hero / Headline Section -->
+<section class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">What happens when a notification arrives?</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Set up quiet automations that work for you in the background.</p>
+</section>
+<!-- Main Content Area: Bento-style / Card Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Rule Card 1 -->
+<div class="bg-surface-container-low p-md rounded-xl border border-outline-variant hover:border-primary transition-all group">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-sm">
+<div class="p-3 bg-primary-fixed text-primary rounded-lg">
+<span class="material-symbols-outlined" data-icon="sms" style="font-variation-settings: 'FILL' 1;">sms</span>
+</div>
+<div>
+<h3 class="font-headline-md text-label-md text-on-surface">Send SMS to Email</h3>
+<p class="font-body-md text-sm text-on-surface-variant">Forward important text messages to your inbox.</p>
+</div>
+</div>
+<!-- Big Easy Toggle -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-14 h-8 bg-tertiary-fixed rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<div class="flex items-center justify-between mt-sm">
+<a class="font-label-md text-primary hover:underline flex items-center gap-xs" href="#">
+                        More Details
+                        <span class="material-symbols-outlined text-[16px]" data-icon="open_in_new">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- Rule Card 2 -->
+<div class="bg-surface-container-low p-md rounded-xl border border-outline-variant hover:border-primary transition-all group">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-sm">
+<div class="p-3 bg-secondary-container text-secondary rounded-lg">
+<span class="material-symbols-outlined" data-icon="database" style="font-variation-settings: 'FILL' 1;">database</span>
+</div>
+<div>
+<h3 class="font-headline-md text-label-md text-on-surface">Save Slack to Database</h3>
+<p class="font-body-md text-sm text-on-surface-variant">Archive shared Slack links into your records.</p>
+</div>
+</div>
+<!-- Big Easy Toggle -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-14 h-8 bg-tertiary-fixed rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<div class="flex items-center justify-between mt-sm">
+<a class="font-label-md text-primary hover:underline flex items-center gap-xs" href="#">
+                        More Details
+                        <span class="material-symbols-outlined text-[16px]" data-icon="open_in_new">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- Rule Card 3 (Quiet Visual) -->
+<div class="bg-surface-container-low p-md rounded-xl border border-outline-variant hover:border-primary transition-all group">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-sm">
+<div class="p-3 bg-tertiary-fixed text-tertiary rounded-lg">
+<span class="material-symbols-outlined" data-icon="notifications_off" style="font-variation-settings: 'FILL' 1;">notifications_off</span>
+</div>
+<div>
+<h3 class="font-headline-md text-label-md text-on-surface">Quiet Mode</h3>
+<p class="font-body-md text-sm text-on-surface-variant">Mute all non-essential alerts after 8 PM.</p>
+</div>
+</div>
+<!-- Big Easy Toggle -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-14 h-8 bg-tertiary-fixed rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<div class="flex items-center justify-between mt-sm">
+<a class="font-label-md text-primary hover:underline flex items-center gap-xs" href="#">
+                        More Details
+                        <span class="material-symbols-outlined text-[16px]" data-icon="open_in_new">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- Add New Rule Section - Asymmetric / CTA -->
+<div class="bg-surface-container-high p-md rounded-xl border-2 border-dashed border-primary/30 flex flex-col items-center justify-center text-center gap-sm">
+<div class="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-sm active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-[32px]" data-icon="add">add</span>
+</div>
+<div>
+<h3 class="font-headline-md text-label-md text-primary">Add New Rule</h3>
+<p class="font-body-md text-sm text-on-surface-variant px-md">Connect more apps and automate your flow.</p>
+</div>
+</div>
+</div>
+<!-- Descriptive Visual Component -->
+<section class="mt-xl flex flex-col md:flex-row items-center gap-lg bg-surface-container-low p-gutter rounded-xl">
+<div class="w-full md:w-1/2">
+<img alt="Automation Flow" class="w-full h-64 object-cover rounded-lg shadow-sm" data-alt="A clean and calm digital illustration of various app icons like email, messaging, and storage connected by soft glowing blue lines. The background is a crisp minimalist off-white space with gentle light blue accents. The visual style is modern, technical yet friendly, utilizing soft shadows and rounded corners to convey simplicity and reliability. High-key lighting emphasizes order and tranquility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBilzo45JHG53veCdQItNh7-oHJOu6z6gwYqPe_-IYbdhwIU8DfBmFKriyKCyQ91n4tD3bx7Hi-FrIrkjeeKvyTn3GptVGDM0znDeSbodRqIqqCZE6fhR3JsCc6Mwn_Ue2FY3Eqt4EdfSIUixBpVV4jnIYuSR6JaoK9llR3IP5d2aefJX53oDMO6J4PGDdBMgNXUvCZipH26fHycMQahSYuaHpAjbR-1MY2IMpIQdkZwh3KNrzumMtFoyvDqwqBHoj55Ad-X8-ooCuM"/>
+</div>
+<div class="w-full md:w-1/2 space-y-sm">
+<h4 class="font-headline-md text-headline-md text-on-surface">You're in control</h4>
+<p class="font-body-md text-on-surface-variant">All rules run locally on your device where possible to ensure your data remains private. SyncSafe never reads the content of your notifications unless a rule explicitly requires it.</p>
+<div class="flex items-center gap-xs text-primary font-label-md">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+                    Privacy-first architecture
+                </div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-4 pt-2 border-t border-outline-variant bg-surface-container-lowest transition-all">
+<!-- Active State: Rules -->
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-6 py-2 transition-transform active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="rule" style="font-variation-settings: 'FILL' 1;">rule</span>
+<span class="font-label-md text-label-md">Rules</span>
+</a>
+<!-- Inactive State: History -->
+<a class="flex flex-col items-center justify-center text-secondary px-6 py-2 hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<!-- Inactive State: Settings -->
+<a class="flex flex-col items-center justify-center text-secondary px-6 py-2 hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<!-- Extra spacing for fixed footer -->
+<div class="h-24 md:hidden"></div>
+</body></html>

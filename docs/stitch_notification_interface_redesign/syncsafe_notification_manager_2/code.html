@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SyncSafe - Message History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#bfc8ce",
+                    "surface-tint": "#0053db",
+                    "surface": "#f9f9ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#e9f2f8",
+                    "on-tertiary-fixed": "#141d21",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "outline-variant": "#c3c6d7",
+                    "surface-variant": "#d8e3fb",
+                    "surface-container-highest": "#d8e3fb",
+                    "on-secondary-container": "#576676",
+                    "primary-fixed": "#dbe1ff",
+                    "on-secondary-fixed": "#0e1d2b",
+                    "on-surface": "#111c2d",
+                    "secondary-fixed-dim": "#b9c8db",
+                    "on-primary-fixed": "#00174b",
+                    "surface-container-low": "#f0f3ff",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#3f484d",
+                    "primary-container": "#2563eb",
+                    "on-background": "#111c2d",
+                    "inverse-on-surface": "#ecf1ff",
+                    "tertiary": "#4e565b",
+                    "primary": "#004ac6",
+                    "surface-dim": "#cfdaf2",
+                    "surface-container": "#e7eeff",
+                    "on-surface-variant": "#434655",
+                    "secondary-container": "#d5e4f8",
+                    "surface-bright": "#f9f9ff",
+                    "on-secondary-fixed-variant": "#3a4858",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "secondary": "#516070",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#dee8ff",
+                    "tertiary-container": "#666f74",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#dbe4ea",
+                    "outline": "#737686",
+                    "background": "#f9f9ff",
+                    "secondary-fixed": "#d5e4f8",
+                    "on-primary": "#ffffff",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "inverse-primary": "#b4c5ff",
+                    "on-primary-container": "#eeefff",
+                    "on-tertiary": "#ffffff",
+                    "inverse-surface": "#263143"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "xs": "4px",
+                    "container-max": "1200px",
+                    "sm": "12px",
+                    "gutter": "24px",
+                    "md": "24px",
+                    "xl": "64px",
+                    "lg": "40px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface">
+<!-- TopAppBar Shell -->
+<header class="w-full top-0 sticky z-40 bg-surface border-b border-outline-variant">
+<div class="flex justify-between items-center px-gutter py-sm max-w-container-max mx-auto">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="sync_saved_locally">sync_saved_locally</span>
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight">SyncSafe</h1>
+</div>
+<button class="active:scale-95 transition-transform duration-200 hover:bg-surface-container-low p-2 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="cloud_done">cloud_done</span>
+</button>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-gutter pt-md pb-xl">
+<!-- Hero Summary Section -->
+<section class="mb-lg">
+<div class="bg-surface-container-low rounded-xl p-md border border-outline-variant">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Today's Overview</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">124 notifications synced today</p>
+</div>
+<div class="flex gap-sm">
+<div class="bg-primary-container text-on-primary-container px-md py-sm rounded-lg flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-md text-label-md">Active Sync</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Layout for Content -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Left: Message History List -->
+<div class="lg:col-span-2 space-y-base">
+<div class="flex items-center justify-between mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface">Recent History</h3>
+<button class="text-primary font-label-md text-label-md hover:underline">View all</button>
+</div>
+<!-- Notification Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-md hover:bg-secondary-container transition-colors group">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md text-on-surface truncate">WhatsApp Message</h4>
+<span class="font-label-md text-label-md text-on-surface-variant">Just now</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">"Hey, are we still meeting at 5?"</p>
+<div class="mt-xs inline-flex items-center px-sm py-xs bg-surface-container-high rounded-full text-[10px] font-bold text-primary uppercase tracking-wider">
+                            Forwarded
+                        </div>
+</div>
+</div>
+<!-- Notification Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-md hover:bg-secondary-container transition-colors group">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md text-on-surface truncate">Gmail: Team Update</h4>
+<span class="font-label-md text-label-md text-on-surface-variant">10 mins ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Weekly sprint goals and roadmap...</p>
+<div class="mt-xs inline-flex items-center px-sm py-xs bg-surface-container-high rounded-full text-[10px] font-bold text-primary uppercase tracking-wider">
+                            Sent
+                        </div>
+</div>
+</div>
+<!-- Notification Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-md hover:bg-secondary-container transition-colors group">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md text-on-surface truncate">Google Calendar</h4>
+<span class="font-label-md text-label-md text-on-surface-variant">45 mins ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Meeting starts in 15 minutes</p>
+<div class="mt-xs inline-flex items-center px-sm py-xs bg-surface-container-high rounded-full text-[10px] font-bold text-primary uppercase tracking-wider">
+                            Forwarded
+                        </div>
+</div>
+</div>
+<!-- Notification Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-md hover:bg-secondary-container transition-colors group">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="slack">chat</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md text-on-surface truncate">Slack: #general</h4>
+<span class="font-label-md text-label-md text-on-surface-variant">1 hour ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Sarah posted a new design update</p>
+<div class="mt-xs inline-flex items-center px-sm py-xs bg-surface-container-high rounded-full text-[10px] font-bold text-primary uppercase tracking-wider">
+                            Sent
+                        </div>
+</div>
+</div>
+</div>
+<!-- Right Column: Banner and Quick Stats -->
+<div class="space-y-lg">
+<!-- How it works Help Banner -->
+<div class="bg-primary-container rounded-xl overflow-hidden shadow-sm relative">
+<div class="p-md text-on-primary-container relative z-10">
+<h3 class="font-headline-md text-headline-md mb-xs">How it works</h3>
+<p class="font-body-md text-body-md opacity-90 mb-md">Learn how SyncSafe keeps your notifications secure and synchronized across all your devices.</p>
+<button class="bg-surface-container-lowest text-primary px-md py-sm rounded-lg font-label-md text-label-md active:scale-95 transition-transform">
+                            View Guide
+                        </button>
+</div>
+<div class="absolute right-[-20px] bottom-[-20px] opacity-20">
+<span class="material-symbols-outlined text-[120px]" data-icon="help_center">help_center</span>
+</div>
+</div>
+<!-- Quick Help Visual -->
+<div class="bg-surface-container-high rounded-xl p-md border border-outline-variant">
+<div class="aspect-video rounded-lg overflow-hidden mb-md">
+<img alt="Dashboard view" class="w-full h-full object-cover" data-alt="A clean, minimalist digital interface showing data synchronization between multiple devices like a smartphone and a laptop. The lighting is soft and airy, typical of a bright modern workspace. The background is a soft blue and white gradient, conveying a sense of digital security and organized information flow." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVuBH8x7WovVZqifPzyzsuPMu64Ws8wtcQKI4OSl_nz8GeF6dXZz_BhpSGM8BhVJSah0Fyrdv95B0RFTvh_y3WTKmPSlNSzJH7aFXZvk4kQjtvfZJlC0dsKbpsLgvQcdLWiDCWtT24WElETGqIA7W1oDi_2AqibmwKwJre11lRDx_gAUbOfJSkofsHuvJK3JXTkh0hTejYgAy_UpatfVqAxeB7WMb78uJBOQYkpvd66UV2Pc0rEeLP_V95biM5X5IGNMX31Ojhvyxy"/>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-xs">Syncing is Secure</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Your data is end-to-end encrypted before it ever leaves your device.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-4 pt-2 bg-surface-container-lowest border-t border-outline-variant shadow-sm">
+<a class="flex flex-col items-center justify-center text-secondary px-6 py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="rule">rule</span>
+<span class="font-label-md text-label-md">Rules</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-6 py-2 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="history" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary px-6 py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+</body></html>

@@ -1,24 +1,61 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
     id("kotlin-parcelize")
 }
 
+// Load webhook configuration from local.properties (gitignored) or environment
+// variables. Used to bundle the webhook URL + method + headers into BuildConfig
+// so end users cannot change them at runtime.
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) {
+        file.inputStream().use { load(it) }
+    }
+}
+
+fun resolveConfig(key: String, default: String): String =
+    localProperties.getProperty(key) ?: System.getenv(key) ?: default
+
+fun stringField(value: String): String {
+    val escaped = value.replace("\\", "\\\\").replace("\"", "\\\"")
+    return "\"$escaped\""
+}
+
 android {
-    namespace = "com.zerodev.smsforwarder"
+    namespace = "id.majopay.gateway"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.zerodev.smsforwarder"
+        applicationId = "id.majopay.gateway"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "WEBHOOK_URL",
+            stringField(resolveConfig("WEBHOOK_URL", ""))
+        )
+        buildConfigField(
+            "String",
+            "WEBHOOK_METHOD",
+            stringField(resolveConfig("WEBHOOK_METHOD", "POST"))
+        )
+        buildConfigField(
+            "String",
+            "WEBHOOK_HEADERS_JSON",
+            stringField(resolveConfig("WEBHOOK_HEADERS_JSON", "{}"))
+        )
     }
 
     buildTypes {
@@ -34,17 +71,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
     buildFeatures {
         compose = true
         buildConfig = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8"
-    }
-    
+
     lint {
         baseline = file("lint-baseline.xml")
         abortOnError = false
@@ -57,15 +88,16 @@ android {
     }
 }
 
-// KAPT configuration
-kapt {
-    correctErrorTypes = true
-    arguments {
-        arg("room.schemaLocation", "${project.projectDir}/schemas".toString())
-        arg("room.incremental", "true")
-        arg("room.expandProjection", "true")
-        arg("kapt.kotlin.generated", "${project.layout.buildDirectory.get()}/generated/source/kapt/main".toString())
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
     }
+}
+
+// KSP configuration
+ksp {
+    arg("room.schemaLocation", "${projectDir}/schemas")
+    arg("room.incremental", "true")
 }
 
 dependencies {
@@ -80,6 +112,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation("androidx.compose.material:material-icons-extended")
     
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.6")
@@ -91,19 +124,19 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
     
     // Hilt Dependency Injection
-    implementation("com.google.dagger:hilt-android:2.48.1")
-    kapt("com.google.dagger:hilt-compiler:2.48.1")
-    
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
     // Room Database
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.room:room-paging:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
-    
+    ksp("androidx.room:room-compiler:2.6.1")
+
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:2.9.0")
-    implementation("androidx.hilt:hilt-work:1.1.0")
-    kapt("androidx.hilt:hilt-compiler:1.1.0")
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
     
     // Networking
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -141,8 +174,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.48.1")
-    kaptAndroidTest("com.google.dagger:hilt-compiler:2.48.1")
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
     
     // Debug dependencies
     debugImplementation(libs.androidx.ui.tooling)

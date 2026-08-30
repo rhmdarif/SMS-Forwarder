@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#f3effc",
+                    "surface-container-low": "#f5f2ff",
+                    "background": "#fcf8ff",
+                    "tertiary": "#7e3000",
+                    "on-tertiary-fixed-variant": "#7b2f00",
+                    "on-surface-variant": "#464555",
+                    "primary": "#3525cd",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#dad7ff",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-dim": "#dcd8e5",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#e2dfff",
+                    "on-background": "#1b1b24",
+                    "secondary-fixed": "#e1e0ff",
+                    "tertiary-container": "#a44100",
+                    "on-primary-fixed": "#0f0069",
+                    "surface-variant": "#e4e1ee",
+                    "inverse-primary": "#c3c0ff",
+                    "surface-container-high": "#eae6f4",
+                    "on-tertiary-fixed": "#351000",
+                    "surface-container": "#f0ecf9",
+                    "primary-container": "#4f46e5",
+                    "outline-variant": "#c7c4d8",
+                    "surface": "#fcf8ff",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#1b1b24",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "on-secondary-container": "#fffbff",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "secondary-container": "#6063ee",
+                    "tertiary-fixed": "#ffdbcc",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#e4e1ee",
+                    "inverse-surface": "#302f39",
+                    "tertiary-fixed-dim": "#ffb695",
+                    "outline": "#777587",
+                    "on-tertiary-container": "#ffd2be",
+                    "on-secondary-fixed": "#07006c",
+                    "on-primary-fixed-variant": "#3323cc",
+                    "surface-tint": "#4d44e3",
+                    "secondary": "#4648d4",
+                    "surface-bright": "#fcf8ff",
+                    "surface-container-lowest": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "max-width": "1280px",
+                    "gutter": "16px",
+                    "margin-desktop": "48px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "xl": "32px",
+                    "unit": "4px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "display": ["Inter"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "display": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar (Modified for Detail View with Back Navigation) -->
+<header class="flex justify-between items-center w-full px-4 h-16 sticky top-0 z-40 bg-background dark:bg-background shadow-sm dark:shadow-none">
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200 Active:opacity-80 Active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary dark:text-inverse-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold tracking-tight text-primary dark:text-inverse-primary">History</h1>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200">
+<span class="material-symbols-outlined text-on-surface-variant dark:text-outline-variant" data-icon="sync">sync</span>
+</button>
+</div>
+</header>
+<main class="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-lg space-y-lg">
+<!-- Hero Section: Notification Identification -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- App Card -->
+<div class="md:col-span-2 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm flex items-start gap-lg">
+<div class="w-16 h-16 rounded-2xl bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container text-[32px]" data-icon="hub">hub</span>
+</div>
+<div class="space-y-xs">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Slack</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">com.tinyspeck.slack</p>
+<div class="inline-flex items-center gap-sm px-sm py-xs bg-surface-container-high rounded-lg">
+<span class="material-symbols-outlined text-label-sm" style="font-size: 14px;">schedule</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Oct 24, 2023 • 14:42:01</span>
+</div>
+</div>
+</div>
+<!-- Fast Actions Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm flex flex-col justify-center space-y-sm">
+<button class="w-full flex items-center justify-center gap-sm bg-primary text-on-primary font-label-lg text-label-lg py-sm rounded-lg hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+                    Retry Forwarding
+                </button>
+<button class="w-full flex items-center justify-center gap-sm bg-surface-container-highest text-on-surface-variant font-label-lg text-label-lg py-sm rounded-lg hover:bg-outline-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="content_copy">content_copy</span>
+                    Copy Content
+                </button>
+<button class="w-full flex items-center justify-center gap-sm border border-error text-error font-label-lg text-label-lg py-sm rounded-lg hover:bg-error-container transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+                    Delete Log
+                </button>
+</div>
+</section>
+<!-- Notification Content Bento Box -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-md">
+<!-- Message Content -->
+<div class="md:col-span-3 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="px-lg py-sm bg-surface-container border-b border-outline-variant flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">Message Payload</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chat_bubble">chat_bubble</span>
+</div>
+<div class="p-lg space-y-md">
+<div class="space-y-xs">
+<p class="font-label-sm text-label-sm text-primary uppercase">Subject</p>
+<p class="font-headline-md text-headline-md text-on-surface">New direct message from Jane Cooper</p>
+</div>
+<div class="space-y-xs">
+<p class="font-label-sm text-label-sm text-primary uppercase">Content</p>
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed">
+                            "Hey, I've updated the NotifSync design documentation for the new API endpoints. Can you take a look at the history item logic specifically for the detail view?"
+                        </p>
+</div>
+</div>
+</div>
+<!-- Forwarding Status -->
+<div class="md:col-span-1 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm flex flex-col items-center justify-center text-center space-y-md">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Forwarding Success</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Webhook response: 200 OK</p>
+</div>
+<div class="w-full pt-md border-t border-outline-variant">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Target Endpoint</p>
+<p class="font-body-md text-body-md text-primary truncate">api.internal.tools/v1/log</p>
+</div>
+</div>
+<!-- Raw JSON Data (Full Width) -->
+<div class="md:col-span-4 bg-inverse-surface rounded-xl overflow-hidden shadow-lg">
+<div class="px-lg py-sm bg-[#25242D] border-b border-on-surface-variant/20 flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-inverse-on-surface/70">raw_notification_data.json</span>
+<button class="text-inverse-on-surface hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+</button>
+</div>
+<div class="p-lg font-mono text-[13px] leading-6 text-on-primary-container overflow-x-auto">
+<pre><code>{
+  "id": "notif_8x29kz01",
+  "app_name": "Slack",
+  "package": "com.tinyspeck.slack",
+  "timestamp": 1698158521000,
+  "priority": "high",
+  "flags": ["FLAG_NO_CLEAR", "FLAG_ONGOING_EVENT"],
+  "extras": {
+    "android.title": "Jane Cooper",
+    "android.text": "Hey, I've updated the NotifSync design...",
+    "android.subText": "Work Workspace",
+    "android.largeIcon": "content://media/external/images/media/442",
+    "android.showChronometer": false
+  },
+  "forwarding_meta": {
+    "rule_id": "rule_dm_01",
+    "status": "delivered",
+    "latency_ms": 142
+  }
+}</code></pre>
+</div>
+</div>
+</section>
+<!-- Technical Metadata Grid -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-md pb-xl">
+<div class="bg-surface-container p-md rounded-lg border border-outline-variant/30">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Device ID</p>
+<p class="font-label-lg text-label-lg text-on-surface">Pixel-7a-4920</p>
+</div>
+<div class="bg-surface-container p-md rounded-lg border border-outline-variant/30">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Channel ID</p>
+<p class="font-label-lg text-label-lg text-on-surface">messages_channel</p>
+</div>
+<div class="bg-surface-container p-md rounded-lg border border-outline-variant/30">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Forwarding Rule</p>
+<p class="font-label-lg text-label-lg text-primary">Slack High Priority</p>
+</div>
+<div class="bg-surface-container p-md rounded-lg border border-outline-variant/30">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Visibility</p>
+<p class="font-label-lg text-label-lg text-on-surface">Private (Locked)</p>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Suppressed due to sub-page context / Back action) -->
+<!-- Exclusion Rule applied: Navigation shell hidden to prioritize content focus on details. -->
+</body></html>

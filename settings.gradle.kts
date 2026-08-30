@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SMS Forwarder"
+rootProject.name = "Majopay Gateway"
 include(":app")

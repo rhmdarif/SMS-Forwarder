@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SyncSafe - Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#bfc8ce",
+                    "surface-tint": "#0053db",
+                    "surface": "#f9f9ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#e9f2f8",
+                    "on-tertiary-fixed": "#141d21",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "outline-variant": "#c3c6d7",
+                    "surface-variant": "#d8e3fb",
+                    "surface-container-highest": "#d8e3fb",
+                    "on-secondary-container": "#576676",
+                    "primary-fixed": "#dbe1ff",
+                    "on-secondary-fixed": "#0e1d2b",
+                    "on-surface": "#111c2d",
+                    "secondary-fixed-dim": "#b9c8db",
+                    "on-primary-fixed": "#00174b",
+                    "surface-container-low": "#f0f3ff",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#3f484d",
+                    "primary-container": "#2563eb",
+                    "on-background": "#111c2d",
+                    "inverse-on-surface": "#ecf1ff",
+                    "tertiary": "#4e565b",
+                    "primary": "#004ac6",
+                    "surface-dim": "#cfdaf2",
+                    "surface-container": "#e7eeff",
+                    "on-surface-variant": "#434655",
+                    "secondary-container": "#d5e4f8",
+                    "surface-bright": "#f9f9ff",
+                    "on-secondary-fixed-variant": "#3a4858",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "secondary": "#516070",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#dee8ff",
+                    "tertiary-container": "#666f74",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#dbe4ea",
+                    "outline": "#737686",
+                    "background": "#f9f9ff",
+                    "secondary-fixed": "#d5e4f8",
+                    "on-primary": "#ffffff",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "inverse-primary": "#b4c5ff",
+                    "on-primary-container": "#eeefff",
+                    "on-tertiary": "#ffffff",
+                    "inverse-surface": "#263143"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "xs": "4px",
+                    "container-max": "1200px",
+                    "sm": "12px",
+                    "gutter": "24px",
+                    "md": "24px",
+                    "xl": "64px",
+                    "lg": "40px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .bento-card {
+            background-color: #ffffff;
+            transition: all 0.3s ease;
+        }
+        .bento-card:hover {
+            background-color: #F0F9FF;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky border-b border-outline-variant bg-surface z-50">
+<div class="flex justify-between items-center px-gutter py-sm max-w-container-max mx-auto">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-headline-md" data-icon="sync_saved_locally">sync_saved_locally</span>
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight">SyncSafe</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full" data-icon="cloud_done">cloud_done</button>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-gutter py-lg">
+<!-- Hero Title -->
+<div class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Settings</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Adjust how SyncSafe works for you.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-md">
+<!-- Account Section (Bento Column 1) -->
+<section class="md:col-span-4 flex flex-col gap-md">
+<div class="p-md rounded-xl border border-outline-variant bento-card h-full">
+<div class="flex items-center gap-sm mb-md text-primary">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<h3 class="font-headline-md text-headline-md">Account</h3>
+</div>
+<div class="space-y-lg">
+<div class="flex items-center justify-between group cursor-pointer">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Alex Johnson</p>
+<p class="text-on-surface-variant text-sm">alex.j@example.com</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="flex items-center justify-between group cursor-pointer border-t border-outline-variant pt-md">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Security</p>
+<p class="text-on-surface-variant text-sm">Keep your data safe</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="lock">lock</span>
+</div>
+</div>
+</div>
+<div class="p-md rounded-xl border border-outline-variant bento-card">
+<div class="flex items-center gap-sm mb-md text-primary">
+<span class="material-symbols-outlined" data-icon="palette">palette</span>
+<h3 class="font-headline-md text-headline-md">Look &amp; Feel</h3>
+</div>
+<p class="text-on-surface-variant text-sm mb-md">Change how the app looks on your screen</p>
+<div class="flex gap-xs">
+<button class="flex-1 py-xs rounded-lg border-2 border-primary text-primary font-label-md">Light</button>
+<button class="flex-1 py-xs rounded-lg border border-outline-variant text-on-surface-variant font-label-md">Dark</button>
+</div>
+</div>
+</section>
+<!-- App Connections & Notifications (Bento Column 2 - Main Action) -->
+<section class="md:col-span-8 flex flex-col gap-md">
+<!-- Notification Permissions - High Focus -->
+<div class="p-lg rounded-xl border border-primary-container bg-surface-container-low shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md mb-md">
+<div class="max-w-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Notification Access</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">We need this permission to watch for important updates and keep your information synced in real-time. Without this, SyncSafe cannot run quietly in the background.</p>
+</div>
+<!-- Toggle Switch -->
+<div class="flex items-center gap-sm">
+<span class="font-label-md text-primary">Enabled</span>
+<button class="w-14 h-8 bg-primary rounded-full relative p-1 transition-colors duration-200">
+<div class="w-6 h-6 bg-white rounded-full ml-auto shadow-sm"></div>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-sm pt-md border-t border-outline-variant">
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
+<span class="text-sm">Never stores private messages</span>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+<span class="text-sm">Instant sync across devices</span>
+</div>
+</div>
+</div>
+<!-- App Connections Grid -->
+<div class="p-md rounded-xl border border-outline-variant bento-card flex-grow">
+<div class="flex items-center justify-between mb-md">
+<div class="flex items-center gap-sm text-primary">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<h3 class="font-headline-md text-headline-md">App Connections</h3>
+</div>
+<button class="text-primary font-label-md hover:underline">Add New</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+<!-- Card 1 -->
+<div class="p-md bg-white border border-outline-variant rounded-lg flex flex-col justify-between">
+<div class="flex items-center gap-md mb-sm">
+<div class="w-12 h-12 rounded-lg bg-[#F0F9FF] flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="mail">mail</span>
+</div>
+<div>
+<h4 class="font-label-md text-on-surface">Email Service</h4>
+<p class="text-xs text-on-surface-variant">Synced 2m ago</p>
+</div>
+</div>
+<button class="w-full py-2 bg-secondary-container text-on-secondary-container rounded-lg font-label-md hover:bg-surface-container-high transition-colors">Manage</button>
+</div>
+<!-- Card 2 -->
+<div class="p-md bg-white border border-outline-variant rounded-lg flex flex-col justify-between">
+<div class="flex items-center gap-md mb-sm">
+<div class="w-12 h-12 rounded-lg bg-[#F0F9FF] flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="calendar_month">calendar_month</span>
+</div>
+<div>
+<h4 class="font-label-md text-on-surface">Calendar</h4>
+<p class="text-xs text-on-surface-variant">Connected</p>
+</div>
+</div>
+<button class="w-full py-2 bg-secondary-container text-on-secondary-container rounded-lg font-label-md hover:bg-surface-container-high transition-colors">Manage</button>
+</div>
+</div>
+</div>
+<!-- Help & Support -->
+<div class="p-md rounded-xl border border-outline-variant bento-card">
+<div class="flex items-center gap-sm mb-md text-primary">
+<span class="material-symbols-outlined" data-icon="help_center">help_center</span>
+<h3 class="font-headline-md text-headline-md">Help</h3>
+</div>
+<div class="flex flex-wrap gap-md">
+<a class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="menu_book">menu_book</span>
+<span class="text-sm font-label-md">Read Guide</span>
+</a>
+<a class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="chat">chat</span>
+<span class="text-sm font-label-md">Talk to Support</span>
+</a>
+<a class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="privacy_tip">privacy_tip</span>
+<span class="text-sm font-label-md">Privacy Policy</span>
+</a>
+</div>
+</div>
+</section>
+</div>
+<!-- Visual Anchor (Soft Aesthetic Image) -->
+<div class="mt-xl rounded-xl overflow-hidden relative h-64 border border-outline-variant">
+<img alt="Settings background" class="w-full h-full object-cover opacity-80" data-alt="A tranquil digital landscape showing soft blue glowing fiber optic cables weaving through a clean white space. The lighting is bright and diffuse, echoing a calm assistant brand personality. The scene feels organized and high-tech yet approachable, emphasizing reliability and psychological safety in a minimalist digital environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuaK_D8HP82Q59g6odtaIpzfniO6Mak-uSc8XD2foUo1JwI-PsYIsDGsFWe6aZ544PbVmH1ev1UfYX9xbcrFUbRsOLwF7jvb4UjxEYVyIpfWzaGc-xkeoFdNidfJFzyI5QvgbwKR6NuLleS6paSCxsS5-JCv2p7YPcvVSgH5UV9PpoiDl10U-J0Qh3rRd9z6levsD0EwFQrN31EaZKqSo65F0cKBynH_ON9DAW9QZYv_LG7jEhJ9oOdOmFBIifJz7XQ-kVz-Qk662l"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent flex items-end p-lg">
+<p class="font-body-md text-primary max-w-sm">SyncSafe keeps your data flowing smoothly behind the scenes, so you can focus on what matters.</p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-4 pt-2 border-t border-outline-variant bg-surface-container-lowest shadow-sm">
+<a class="flex flex-col items-center justify-center text-secondary px-6 py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="rule">rule</span>
+<span class="font-label-md text-label-md">Rules</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary px-6 py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-6 py-2 transition-transform active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+</body></html>
