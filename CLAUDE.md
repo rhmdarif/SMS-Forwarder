@@ -20,7 +20,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ./gradlew test
 
 # Run a single test class
-./gradlew test --tests "id.majopay.gateway.ClassName"
+./gradlew test --tests "id.majopay.ngateway.ClassName"
 
 # Run lint checks
 ./gradlew lint

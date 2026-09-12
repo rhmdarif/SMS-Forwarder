@@ -29,11 +29,11 @@ fun stringField(value: String): String {
 }
 
 android {
-    namespace = "id.majopay.gateway"
+    namespace = "id.majopay.ngateway"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "id.majopay.gateway"
+        applicationId = "id.majopay.ngateway"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
@@ -60,7 +60,9 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            // R8: shrink + obfuscate. Menaikkan biaya reverse engineering, bukan mencegahnya.
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -74,6 +76,11 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+    }
+
+    testOptions {
+        // android.util.Log dipanggil di use case; kembalikan nilai default di JVM unit test.
+        unitTests.isReturnDefaultValues = true
     }
 
     lint {
@@ -128,10 +135,10 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     // Room Database
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    implementation("androidx.room:room-paging:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-runtime:2.7.2")
+    implementation("androidx.room:room-ktx:2.7.2")
+    implementation("androidx.room:room-paging:2.7.2")
+    ksp("androidx.room:room-compiler:2.7.2")
 
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:2.9.0")
@@ -160,13 +167,16 @@ dependencies {
     
     // Date and time
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+
+    // Encrypted storage for API credentials
+    implementation(libs.androidx.security.crypto)
     
     // Testing
     testImplementation(libs.junit)
-    testImplementation("org.mockito:mockito-core:5.7.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+    testImplementation("org.mockito:mockito-core:5.20.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation("androidx.room:room-testing:2.6.1")
+    testImplementation("androidx.room:room-testing:2.7.2")
     testImplementation("androidx.work:work-testing:2.9.0")
     
     // Android Testing
