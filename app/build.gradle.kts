@@ -79,6 +79,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Simbol debug native ikut dikemas ke dalam AAB (BUNDLE-METADATA) supaya Play
+            // Console berhenti memperingatkan "belum mengunggah simbol debug". Satu-satunya
+            // .so di aplikasi ini berasal dari androidx.graphics:graphics-path (dependensi
+            // Compose), bukan kode native sendiri. Butuh NDK; AGP mengunduhnya otomatis.
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"
+            }
         }
     }
     compileOptions {

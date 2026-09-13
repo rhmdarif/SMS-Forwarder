@@ -85,6 +85,16 @@ Data "ephemeral"? Play mendefinisikan ephemeral sebagai data yang hanya ada di m
 - Gunakan Play App Signing; upload **AAB** (`./gradlew bundleRelease`), bukan APK.
 - Naikkan `versionCode` di `app/build.gradle.kts` setiap upload.
 
+### B7. Peringatan "belum mengunggah simbol debug native"
+Satu-satunya kode native di bundle adalah `libandroidx.graphics.path.so` dari dependensi Compose, bukan kode sendiri, dan file itu sudah di-strip oleh AndroidX. Peringatan ini **tidak memblokir rilis** dan boleh diabaikan.
+
+Kalau ingin menghilangkannya, `app/build.gradle.kts` sudah memuat `ndk { debugSymbolLevel = "SYMBOL_TABLE" }` di build type release. AGP hanya menjalankannya jika NDK terpasang; tanpa NDK, langkah ini dilewati tanpa pesan. Caranya:
+1. Android Studio > Settings > Languages & Frameworks > Android SDK > tab **SDK Tools** > centang **NDK (Side by side)** > OK.
+2. Kalau versi NDK yang terpasang berbeda dari default AGP, tambahkan `ndkVersion = "<versi terpasang>"` di blok `android {}`.
+3. `./gradlew bundleRelease`, lalu pastikan AAB berisi `BUNDLE-METADATA/com.android.tools.build.debugsymbols/`. Play membaca folder itu otomatis; tidak perlu upload manual.
+
+Alternatif tanpa NDK: Play Console > App bundle explorer > pilih versi > tab Downloads > "Upload native debug symbols", unggah zip berisi `lib/<abi>/libandroidx.graphics.path.so` hasil ekstrak dari AAB. Secara teknis ini hanya menghilangkan peringatan, tidak menambah informasi crash karena file sudah di-strip.
+
 ## C. Hal yang masih perlu diputuskan (di luar kode)
 
 1. **Pengujian tertutup 12 penguji** berlaku untuk akun developer perorangan baru. Jika akun developer Majopay adalah akun organisasi, syarat ini tidak berlaku.
