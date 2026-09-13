@@ -35,7 +35,7 @@ Majopay Gateway is an Android app that monitors SMS messages and app notificatio
 
 **Tech Stack**: Kotlin, Jetpack Compose, Room, Hilt, Retrofit, WorkManager, Coroutines/Flow
 
-**SDK Targets**: minSdk 29 (Android 10), targetSdk 34 (Android 14), Java 11
+**SDK Targets**: minSdk 29 (Android 10), targetSdk 36 (Android 16), Java 11
 
 ## Architecture
 
@@ -83,9 +83,10 @@ GitHub Actions workflows in `.github/workflows/`:
 
 Release pattern: Commit with message starting with `release:` triggers automatic release creation.
 
-## Protected Permissions
+## Protected Permissions & Google Play
 
-The app requires special permissions that trigger lint warnings (intentionally disabled):
-- `BIND_NOTIFICATION_LISTENER_SERVICE` - for notification monitoring
-- `QUERY_ALL_PACKAGES` - for app picker UI
-- `PACKAGE_USAGE_STATS` - for MRU app sorting
+- `BIND_NOTIFICATION_LISTENER_SERVICE` - for notification monitoring (lint `ProtectedPermissions` sengaja dimatikan)
+- `QUERY_ALL_PACKAGES` dan `PACKAGE_USAGE_STATS` **sengaja tidak diminta** karena ditolak kebijakan Play untuk kasus app picker. Jangan ditambahkan kembali.
+- Foreground service memakai tipe `specialUse` (bukan `dataSync`) beserta `PROPERTY_SPECIAL_USE_FGS_SUBTYPE`.
+- Sebelum meminta izin SMS atau membuka akses notifikasi, UI wajib menampilkan `DataDisclosureDialog` (prominent disclosure).
+- Dokumen kebijakan privasi dan checklist Play Console ada di `docs/play-store/`. URL kebijakan privasi diatur lewat `PRIVACY_POLICY_URL` di `local.properties`.

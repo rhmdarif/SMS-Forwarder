@@ -18,3 +18,8 @@ WEBHOOK_METHOD=POST
 ## Optional extra headers as a single-line JSON object (dikirim bersama `x-app-key`).
 ## Escape inner quotes as you would in any properties file.
 WEBHOOK_HEADERS_JSON={}
+
+## URL kebijakan privasi publik (wajib untuk Google Play). Harus sama dengan URL yang
+## didaftarkan di Play Console > App content > Privacy policy. Ditampilkan di layar
+## Pengaturan dan di dialog disclosure sebelum izin SMS/notifikasi diminta.
+PRIVACY_POLICY_URL=https://majopay.id/gateway/privacy

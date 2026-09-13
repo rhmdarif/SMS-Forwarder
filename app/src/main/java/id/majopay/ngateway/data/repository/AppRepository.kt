@@ -1,6 +1,5 @@
 package id.majopay.ngateway.data.repository
 
-import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -45,7 +44,6 @@ class AppRepository @Inject constructor(
     }
     
     private val packageManager = context.packageManager
-    private val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as? UsageStatsManager
     
     // Comprehensive app cache
     private var _allAppsCache: List<AppInfo>? = null
@@ -155,68 +153,41 @@ class AppRepository @Inject constructor(
     }
     
     /**
-     * Load MRU apps using UsageStatsManager for recently used apps.
+     * Isi daftar "sering dipakai" awal dengan aplikasi populer yang terpasang.
+     *
+     * Sengaja TIDAK memakai UsageStatsManager: izin PACKAGE_USAGE_STATS bukan fungsi inti
+     * aplikasi dan ditolak kebijakan Google Play untuk kasus ini. Setelah user memilih
+     * aplikasi lewat picker, [addToMru] yang mengurutkan daftar berdasarkan pilihan terakhir.
      */
     private suspend fun loadMruApps() {
         val mruList = mutableListOf<AppInfo>()
-        
-        try {
-            // Get usage stats for the last 7 days
-            val endTime = System.currentTimeMillis()
-            val startTime = endTime - (7 * 24 * 60 * 60 * 1000L) // 7 days ago
-            
-            val usageStats = usageStatsManager?.queryUsageStats(
-                UsageStatsManager.INTERVAL_DAILY,
-                startTime,
-                endTime
-            )
-            
-            // Sort by last time used and take top apps
-            val recentlyUsedPackages = usageStats
-                ?.filter { it.lastTimeUsed > 0 && it.totalTimeInForeground > 0 }
-                ?.sortedByDescending { it.lastTimeUsed }
-                ?.take(MRU_CACHE_SIZE)
-                ?.map { it.packageName }
-                ?: emptyList()
-            
-            // Convert to AppInfo objects
-            for (packageName in recentlyUsedPackages) {
-                getAppInfo(packageName)?.let { appInfo ->
-                    if (!appInfo.isSystemApp) { // Prefer user apps for MRU
-                        mruList.add(appInfo)
-                    }
-                }
-            }
-            
-        } catch (e: Exception) {
-            // Fall back to common apps if usage stats unavailable
-            val commonPackages = listOf(
-                "com.whatsapp",
-                "com.facebook.orca", // Facebook Messenger
-                "com.google.android.gm", // Gmail
-                "org.telegram.messenger", // Telegram
-                "com.instagram.android", // Instagram
-                "com.facebook.katana", // Facebook
-                "com.twitter.android", // Twitter/X
-                "com.google.android.apps.messaging", // Google Messages
-                "com.slack", // Slack
-                "com.discord", // Discord
-                "com.skype.raider", // Skype
-                "com.viber.voip", // Viber
-                "com.google.android.talk", // Google Chat
-                "com.microsoft.teams", // Microsoft Teams
-                "com.zhiliaoapp.musically", // TikTok
-                "com.snapchat.android", // Snapchat
-                "com.linkedin.android", // LinkedIn
-                "com.pinterest", // Pinterest
-                "com.reddit.frontpage" // Reddit
-            )
-            
-            for (packageName in commonPackages) {
-                getAppInfo(packageName)?.let { mruList.add(it) }
-            }
+
+        val commonPackages = listOf(
+            "com.whatsapp",
+            "com.facebook.orca", // Facebook Messenger
+            "com.google.android.gm", // Gmail
+            "org.telegram.messenger", // Telegram
+            "com.instagram.android", // Instagram
+            "com.facebook.katana", // Facebook
+            "com.twitter.android", // Twitter/X
+            "com.google.android.apps.messaging", // Google Messages
+            "com.slack", // Slack
+            "com.discord", // Discord
+            "com.skype.raider", // Skype
+            "com.viber.voip", // Viber
+            "com.google.android.talk", // Google Chat
+            "com.microsoft.teams", // Microsoft Teams
+            "com.zhiliaoapp.musically", // TikTok
+            "com.snapchat.android", // Snapchat
+            "com.linkedin.android", // LinkedIn
+            "com.pinterest", // Pinterest
+            "com.reddit.frontpage" // Reddit
+        )
+
+        for (packageName in commonPackages) {
+            getAppInfo(packageName)?.let { mruList.add(it) }
         }
-        
+
         _mruApps.value = mruList
     }
     
@@ -237,7 +208,7 @@ class AppRepository @Inject constructor(
             val allApps = mutableListOf<AppInfo>()
             
             try {
-                // Method 1: Try to get all apps (works on Android < 11 or with QUERY_ALL_PACKAGES)
+                // Method 1: getInstalledApplications hanya mengembalikan paket yang terlihat lewat <queries> (tanpa QUERY_ALL_PACKAGES)
                 val installedApps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
                 installedApps.forEach { appInfo ->
                     try {

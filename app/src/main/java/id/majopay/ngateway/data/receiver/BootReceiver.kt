@@ -10,8 +10,9 @@ import androidx.work.WorkManager
 import id.majopay.ngateway.data.worker.SmsMonitoringWorker
 
 /**
- * BroadcastReceiver for handling device boot completion.
- * Ensures SMS monitoring service starts automatically when the device boots.
+ * BroadcastReceiver for device boot completion and self-update.
+ * Ensures SMS monitoring service starts automatically when the device boots
+ * or after this app is updated.
  */
 class BootReceiver : BroadcastReceiver() {
     
@@ -28,9 +29,11 @@ class BootReceiver : BroadcastReceiver() {
             return
         }
         
-        // Only process BOOT_COMPLETED intents
-        if (intent.action != Intent.ACTION_BOOT_COMPLETED) {
-            Log.d(TAG, "Ignoring non-boot intent: ${intent.action}")
+        // Hanya boot selesai atau aplikasi ini sendiri baru di-update (bukan paket lain).
+        if (intent.action != Intent.ACTION_BOOT_COMPLETED &&
+            intent.action != Intent.ACTION_MY_PACKAGE_REPLACED
+        ) {
+            Log.d(TAG, "Ignoring unexpected intent: ${intent.action}")
             return
         }
         

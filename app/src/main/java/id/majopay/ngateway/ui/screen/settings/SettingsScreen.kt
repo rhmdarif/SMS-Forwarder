@@ -28,6 +28,8 @@ import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.NotificationsActive
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.OpenInNew
+import androidx.compose.material.icons.outlined.Policy
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Sms
 import androidx.compose.material.icons.outlined.TipsAndUpdates
@@ -60,9 +62,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import id.majopay.ngateway.BuildConfig
 import id.majopay.ngateway.data.repository.AppRepository
 import id.majopay.ngateway.data.service.NotifRouterService
 import id.majopay.ngateway.domain.model.ApiCredentials
+import id.majopay.ngateway.ui.component.DataDisclosureDialog
 import id.majopay.ngateway.ui.component.IconListRow
 import id.majopay.ngateway.ui.component.InfoBanner
 import id.majopay.ngateway.ui.component.MajopayTopBar
@@ -71,9 +75,11 @@ import id.majopay.ngateway.ui.component.PrimaryButtonSmall
 import id.majopay.ngateway.ui.component.ScreenHeader
 import id.majopay.ngateway.ui.component.ScreenHorizontalPadding
 import id.majopay.ngateway.ui.component.SectionCard
+import id.majopay.ngateway.ui.component.SensitiveAccess
 import id.majopay.ngateway.ui.component.SoftBlock
 import id.majopay.ngateway.ui.component.StatusChip
 import id.majopay.ngateway.ui.component.TonalButton
+import id.majopay.ngateway.ui.component.openPrivacyPolicy
 import id.majopay.ngateway.ui.screen.setup.CredentialsFormFields
 import id.majopay.ngateway.ui.screen.setup.CredentialsViewModel
 import id.majopay.ngateway.ui.screen.setup.rememberCredentialsFormState
@@ -108,6 +114,23 @@ fun SettingsScreen(
     val openNotificationListenerSettings = {
         val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
         context.startActivity(intent)
+    }
+
+    // Prominent disclosure (kebijakan User Data Google Play): dialog penjelasan data harus
+    // muncul dan disetujui SEBELUM dialog izin sistem / layar akses notifikasi dibuka.
+    var pendingDisclosure by remember { mutableStateOf<SensitiveAccess?>(null) }
+    pendingDisclosure?.let { access ->
+        DataDisclosureDialog(
+            access = access,
+            onAccept = {
+                pendingDisclosure = null
+                when (access) {
+                    SensitiveAccess.Sms -> permissionsState.launchMultiplePermissionRequest()
+                    SensitiveAccess.Notification -> openNotificationListenerSettings()
+                }
+            },
+            onDismiss = { pendingDisclosure = null }
+        )
     }
 
     Scaffold(
@@ -150,14 +173,14 @@ fun SettingsScreen(
                 SectionCard(title = "Izin akses", icon = Icons.Outlined.Lock, tone = Tone.Orange) {
                     PermissionItem(
                         title = "Izin SMS",
-                        description = "Biar aplikasi bisa menerima dan membaca SMS.",
+                        description = "Biar aplikasi bisa mendeteksi SMS dari pengirim yang kamu pantau.",
                         icon = Icons.Outlined.Sms,
                         tone = Tone.Primary,
                         isGranted = permissionsState.permissions.filter {
                             it.permission == Manifest.permission.RECEIVE_SMS ||
                                 it.permission == Manifest.permission.READ_SMS
                         }.all { it.status.isGranted },
-                        onRequest = { permissionsState.launchMultiplePermissionRequest() }
+                        onRequest = { pendingDisclosure = SensitiveAccess.Sms }
                     )
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         PermissionItem(
@@ -173,11 +196,11 @@ fun SettingsScreen(
                     }
                     PermissionItem(
                         title = "Akses notifikasi",
-                        description = "Biar aplikasi bisa membaca notifikasi dari aplikasi lain.",
+                        description = "Biar aplikasi bisa mendeteksi notifikasi dari aplikasi yang kamu pantau.",
                         icon = Icons.Outlined.NotificationsActive,
                         tone = Tone.Purple,
                         isGranted = isNotificationListenerEnabled,
-                        onRequest = openNotificationListenerSettings
+                        onRequest = { pendingDisclosure = SensitiveAccess.Notification }
                     )
                     PermissionItem(
                         title = "Akses internet",
@@ -192,10 +215,26 @@ fun SettingsScreen(
 
             item {
                 SectionCard(title = "Tentang aplikasi", icon = Icons.Outlined.Info, tone = Tone.Info) {
-                    InfoRow("Versi", "1.1.0")
-                    InfoRow("Package", "id.majopay.ngateway")
-                    InfoRow("Target SDK", "34 (Android 14)")
-                    InfoRow("Min SDK", "29 (Android 10)")
+                    InfoRow("Versi", BuildConfig.VERSION_NAME)
+                    InfoRow("Package", BuildConfig.APPLICATION_ID)
+                    InfoRow("Target SDK", context.applicationInfo.targetSdkVersion.toString())
+                    InfoRow("Min SDK", Build.VERSION_CODES.Q.toString())
+                    Spacer(modifier = Modifier.height(4.dp))
+                    IconListRow(
+                        icon = Icons.Outlined.Policy,
+                        title = "Kebijakan privasi",
+                        subtitle = "Data apa yang dibaca aplikasi dan ke mana dikirim.",
+                        tone = Tone.Info,
+                        onClick = { openPrivacyPolicy(context) },
+                        trailing = {
+                            Icon(
+                                imageVector = Icons.Outlined.OpenInNew,
+                                contentDescription = "Buka di browser",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    )
                 }
             }
 

@@ -26,7 +26,7 @@ A minimal-UI Android app that monitors SMS and notifications in the background, 
 
 ## Technical Requirements
 
-- **Target SDK**: 34 (Android 14)
+- **Target SDK**: 36 (Android 16)
 - **Minimum SDK**: 29 (Android 10)
 - **Language**: Kotlin
 - **Build System**: Gradle with Kotlin DSL
@@ -42,8 +42,13 @@ A minimal-UI Android app that monitors SMS and notifications in the background, 
 - `WAKE_LOCK` - Keep device awake during processing
 
 ### Protected Permissions
-- `BIND_NOTIFICATION_LISTENER_SERVICE` - Monitor app notifications
-- `PACKAGE_USAGE_STATS` - Access app usage for smart app picker
+- `BIND_NOTIFICATION_LISTENER_SERVICE` - Monitor app notifications (user grants via Settings > Notification access)
+
+### Intentionally NOT requested (Google Play policy)
+- `QUERY_ALL_PACKAGES` - app picker relies on `<queries>` in the manifest instead
+- `PACKAGE_USAGE_STATS` - MRU sorting now comes from the user's own picks, not usage stats
+
+See `docs/play-store/` for the privacy policy and the Play Console submission checklist.
 
 ## Project Structure
 

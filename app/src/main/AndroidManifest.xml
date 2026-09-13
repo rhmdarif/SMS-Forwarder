@@ -15,9 +15,12 @@
     <!-- Boot receiver permission -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     
-    <!-- Foreground service permissions -->
+    <!-- Foreground service: tipe specialUse (pemantauan notifikasi/SMS dari sumber yang
+         dipilih user). Tipe dataSync sengaja tidak dipakai: Android 15+ membatasinya 6 jam/hari
+         dan melarangnya dimulai dari BOOT_COMPLETED. Tipe ini wajib dideklarasikan di
+         Play Console (App content > Foreground service permissions) beserta video demo. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     
     <!-- Wake lock permission for background processing -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -31,20 +34,11 @@
     <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" 
         tools:ignore="ProtectedPermissions" />
     
-    <!-- Usage stats permission for MRU apps -->
-    <!-- Users can grant this through Settings > Apps > Special access > Usage access -->
-    <!-- This allows us to show recently used apps in the app picker for better UX -->
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" 
-        tools:ignore="ProtectedPermissions" />
-    
-    <!-- Query all packages permission for comprehensive app list (requires special approval) -->
-    <!-- This is a fallback - the queries section above should handle most cases -->
-    <!-- Google Play may require justification for this permission -->
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" 
-        tools:ignore="QueryAllPackagesPermission" />
-    
+    <!-- PACKAGE_USAGE_STATS dan QUERY_ALL_PACKAGES sengaja TIDAK diminta: keduanya bukan
+         fungsi inti dan ditolak kebijakan Google Play untuk kasus app picker. Daftar aplikasi
+         untuk picker diambil dari <queries> di bawah (aplikasi ber-launcher + paket populer). -->
+
     <!-- Package visibility queries for Android 11+ (API 30+) -->
-    <!-- This allows the app to see all installed applications for app picker -->
     <queries>
         <!-- Query for all apps that can receive notifications -->
         <intent>
@@ -146,8 +140,6 @@
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-                <action android:name="android.intent.action.PACKAGE_REPLACED" />
-                <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
@@ -156,7 +148,12 @@
             android:name=".data.service.SmsForwardingService"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="dataSync" />
+            android:foregroundServiceType="specialUse">
+            <!-- Wajib untuk tipe specialUse: penjelasan singkat yang dibaca reviewer Play. -->
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Memantau notifikasi dan SMS masuk dari aplikasi/pengirim yang dipilih pengguna secara real-time, lalu meneruskan pesan yang cocok aturan ke aplikasi milik pengguna melalui relay api-proxy.majopay.id." />
+        </service>
 
         <!-- Notification Router Service -->
         <service

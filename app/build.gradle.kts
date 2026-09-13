@@ -30,12 +30,12 @@ fun stringField(value: String): String {
 
 android {
     namespace = "id.majopay.ngateway"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "id.majopay.ngateway"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -55,6 +55,12 @@ android {
             "String",
             "WEBHOOK_HEADERS_JSON",
             stringField(resolveConfig("WEBHOOK_HEADERS_JSON", "{}"))
+        )
+        // URL kebijakan privasi publik. Wajib sama dengan yang didaftarkan di Play Console.
+        buildConfigField(
+            "String",
+            "PRIVACY_POLICY_URL",
+            stringField(resolveConfig("PRIVACY_POLICY_URL", "https://majopay.id/gateway/privacy"))
         )
     }
 
@@ -88,10 +94,9 @@ android {
         abortOnError = false
         warningsAsErrors = false
         checkReleaseBuilds = false
-        disable += setOf(
-            "ProtectedPermissions",
-            "QueryAllPackagesPermission"
-        )
+        // BIND_NOTIFICATION_LISTENER_SERVICE memang signature-level; diberikan user lewat
+        // Settings > Akses notifikasi. QUERY_ALL_PACKAGES sudah dihapus (kebijakan Play).
+        disable += setOf("ProtectedPermissions")
     }
 }
 
