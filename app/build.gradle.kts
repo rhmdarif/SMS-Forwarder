@@ -20,8 +20,14 @@ val localProperties = Properties().apply {
     }
 }
 
-fun resolveConfig(key: String, default: String): String =
-    localProperties.getProperty(key) ?: System.getenv(key) ?: default
+// Nilai di local.properties tidak perlu dikutip; kalau user tetap menulis "..." atau '...',
+// kutipnya dibuang supaya tidak ikut masuk ke BuildConfig (URL jadi tidak valid).
+fun resolveConfig(key: String, default: String): String {
+    val raw = (localProperties.getProperty(key) ?: System.getenv(key) ?: default).trim()
+    val quoteChars = setOf('"', '\'')
+    val quoted = raw.length >= 2 && raw.first() == raw.last() && raw.first() in quoteChars
+    return if (quoted) raw.substring(1, raw.length - 1) else raw
+}
 
 fun stringField(value: String): String {
     val escaped = value.replace("\\", "\\\\").replace("\"", "\\\"")

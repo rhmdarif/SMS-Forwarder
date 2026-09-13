@@ -2,6 +2,7 @@ package id.majopay.ngateway.ui.component
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -159,8 +160,13 @@ fun DataDisclosureDialog(
     )
 }
 
-/** Buka URL kebijakan privasi (dari BuildConfig) di browser. */
+/** Buka URL kebijakan privasi (dari BuildConfig) di browser; beri tahu user kalau gagal. */
 fun openPrivacyPolicy(context: android.content.Context) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.PRIVACY_POLICY_URL))
-    runCatching { context.startActivity(intent) }
+    val url = BuildConfig.PRIVACY_POLICY_URL.trim()
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    val opened = url.startsWith("http", ignoreCase = true) &&
+        runCatching { context.startActivity(intent) }.isSuccess
+    if (!opened) {
+        Toast.makeText(context, "Nggak bisa membuka kebijakan privasi: $url", Toast.LENGTH_LONG).show()
+    }
 }

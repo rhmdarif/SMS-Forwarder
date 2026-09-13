@@ -22,4 +22,5 @@ WEBHOOK_HEADERS_JSON={}
 ## URL kebijakan privasi publik (wajib untuk Google Play). Harus sama dengan URL yang
 ## didaftarkan di Play Console > App content > Privacy policy. Ditampilkan di layar
 ## Pengaturan dan di dialog disclosure sebelum izin SMS/notifikasi diminta.
+## Tulis tanpa tanda kutip.
 PRIVACY_POLICY_URL=https://majopay.id/gateway/privacy
