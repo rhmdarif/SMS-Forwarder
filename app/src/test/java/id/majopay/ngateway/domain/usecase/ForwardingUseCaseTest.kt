@@ -12,7 +12,6 @@ import id.majopay.ngateway.domain.model.ApiCredentials
 import id.majopay.ngateway.domain.model.ForwardingHistory
 import id.majopay.ngateway.domain.model.ForwardingStatus
 import id.majopay.ngateway.domain.model.Rule
-import id.majopay.ngateway.domain.model.SmsMessage
 import id.majopay.ngateway.domain.model.SourceType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -35,7 +34,7 @@ import org.mockito.kotlin.whenever
 import retrofit2.Response
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class SmsForwardingUseCaseTest {
+class ForwardingUseCaseTest {
 
     private companion object {
         const val BASE_URL = "https://api-proxy.dev-ngalehkuy.workers.dev/"
@@ -49,18 +48,27 @@ class SmsForwardingUseCaseTest {
     private val webhookConfig: WebhookConfig = mock()
     private val credentialRepository: CredentialRepository = mock()
 
-    private lateinit var useCase: SmsForwardingUseCase
+    private lateinit var useCase: ForwardingUseCase
 
     private val now = Clock.System.now()
     private val rule = Rule(
         id = 7,
-        name = "Semua SMS",
-        pattern = "transfer",
-        source = SourceType.SMS,
+        name = "Semua notifikasi",
+        pattern = "pesanan",
+        source = SourceType.NOTIFICATION,
         createdAt = now,
         updatedAt = now
     )
-    private val sms = SmsMessage(body = "Anda menerima transfer Rp 50.000", sender = "+628123", timestamp = now)
+    private val notificationText = "Ada pesanan baru dari Budi"
+
+    private suspend fun processNotification() = useCase.processNotification(
+        packageName = "com.example.toko",
+        appLabel = "Toko",
+        title = "Pesanan masuk",
+        text = notificationText,
+        postTime = now.toEpochMilliseconds(),
+        extras = emptyMap()
+    )
 
     @Before
     fun setUp() = runTest {
@@ -76,7 +84,7 @@ class SmsForwardingUseCaseTest {
         whenever(historyRepository.createHistory(any())).thenReturn(42L)
         whenever(apiService.postToEndpoint(any(), any(), any())).thenReturn(Response.success("ok"))
 
-        useCase = SmsForwardingUseCase(
+        useCase = ForwardingUseCase(
             ruleRepository = ruleRepository,
             historyRepository = historyRepository,
             httpClient = HttpClient(apiService, Gson()),
@@ -89,14 +97,14 @@ class SmsForwardingUseCaseTest {
     fun `tanpa kredensial webhook tidak dikirim dan history FAILED`() = runTest {
         whenever(credentialRepository.current()).thenReturn(null)
 
-        val results = useCase.processSms(sms)
+        val results = processNotification()
 
         verify(apiService, never()).postToEndpoint(any(), any(), any())
 
         assertEquals(1, results.size)
         val history = results.first()
         assertEquals(ForwardingStatus.FAILED, history.status)
-        assertEquals(SmsForwardingUseCase.CREDENTIALS_MISSING_MESSAGE, history.errorMessage)
+        assertEquals(ForwardingUseCase.CREDENTIALS_MISSING_MESSAGE, history.errorMessage)
         assertEquals(BASE_URL, history.endpoint)
         assertFalse(history.requestHeaders.containsKey(ApiCredentials.SECRET_HEADER))
 
@@ -109,7 +117,7 @@ class SmsForwardingUseCaseTest {
     fun `dengan kredensial endpoint berisi api_key dan header x-app-key berisi secret`() = runTest {
         whenever(credentialRepository.current()).thenReturn(ApiCredentials(API_KEY, API_SECRET))
 
-        useCase.processSms(sms)
+        processNotification()
 
         val url = argumentCaptor<String>()
         val headers = argumentCaptor<Map<String, String>>()
@@ -118,14 +126,14 @@ class SmsForwardingUseCaseTest {
         assertEquals("https://api-proxy.dev-ngalehkuy.workers.dev/$API_KEY", url.firstValue)
         assertEquals(API_SECRET, headers.firstValue[ApiCredentials.SECRET_HEADER])
         assertEquals("application/json", headers.firstValue["Content-Type"])
-        assertEquals("SMS", headers.firstValue["X-Source-Type"])
+        assertEquals("NOTIFICATION", headers.firstValue["X-Source-Type"])
     }
 
     @Test
     fun `snapshot history di-mask dan tidak menyimpan kredensial utuh`() = runTest {
         whenever(credentialRepository.current()).thenReturn(ApiCredentials(API_KEY, API_SECRET))
 
-        val results = useCase.processSms(sms)
+        val results = processNotification()
         val history = results.first()
 
         assertEquals(ForwardingStatus.SUCCESS, history.status)
@@ -149,8 +157,8 @@ class SmsForwardingUseCaseTest {
             id = 1,
             ruleId = rule.id,
             matchedRule = true,
-            messageBody = sms.body,
-            sourceType = "SMS",
+            messageBody = notificationText,
+            sourceType = "NOTIFICATION",
             requestBody = "{}",
             status = ForwardingStatus.FAILED,
             timestamp = now
@@ -160,7 +168,7 @@ class SmsForwardingUseCaseTest {
             useCase.resendHistory(history)
             fail("Seharusnya melempar IllegalArgumentException")
         } catch (e: IllegalArgumentException) {
-            assertEquals(SmsForwardingUseCase.CREDENTIALS_MISSING_MESSAGE, e.message)
+            assertEquals(ForwardingUseCase.CREDENTIALS_MISSING_MESSAGE, e.message)
         }
         verify(apiService, never()).postToEndpoint(any(), any(), any())
     }
@@ -172,8 +180,8 @@ class SmsForwardingUseCaseTest {
             id = 1,
             ruleId = rule.id,
             matchedRule = true,
-            messageBody = sms.body,
-            sourceType = "SMS",
+            messageBody = notificationText,
+            sourceType = "NOTIFICATION",
             endpoint = "https://api-proxy.dev-ngalehkuy.workers.dev/****old1",
             requestHeaders = mapOf(ApiCredentials.SECRET_HEADER to "****old1"),
             requestBody = "{\"body\":\"x\"}",

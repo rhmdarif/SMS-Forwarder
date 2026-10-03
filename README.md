@@ -1,16 +1,15 @@
-# SMS Forwarder Android App
+# Majopay Gateway
 
-A minimal-UI Android app that monitors SMS and notifications in the background, forwarding matching messages to user-defined HTTP APIs based on customizable rules.
+A minimal-UI Android app that monitors app notifications in the background, forwarding matching messages to the user's own endpoint via the Majopay relay based on customizable rules.
 
 ## Features
 
-🔄 **Background SMS & Notification Processing** - Silently captures incoming SMS and app notifications  
+🔄 **Background Notification Processing** - Captures notifications from apps the user picks  
 📋 **Pattern-Based Rules** - Regex or substring matching against message content  
 🌐 **HTTP API Forwarding** - POST/GET/PUT/PATCH to any HTTP endpoint  
 📊 **Custom Headers** - Configurable headers for each forwarding rule  
 📈 **History Tracking** - Paginated logs with filtering and search capabilities  
-🔄 **Auto-Start** - Automatically starts monitoring on device boot  
-⚡ **Battery Optimized** - Uses foreground service with minimal notifications  
+🔄 **Auto-Reconnect** - Notification listener is rebound by the system after reboot, no foreground service  
 🎯 **Smart Filtering** - Filter by app, search content, or use pattern matching  
 📱 **Modern UI** - Clean Material 3 design with swipe gestures  
 
@@ -21,7 +20,6 @@ A minimal-UI Android app that monitors SMS and notifications in the background, 
 - **Room Database** for local persistence with migrations
 - **Retrofit + OkHttp** for HTTP networking
 - **Hilt** for dependency injection
-- **WorkManager** for background tasks
 - **Coroutines + Flow** for reactive programming
 
 ## Technical Requirements
@@ -34,12 +32,7 @@ A minimal-UI Android app that monitors SMS and notifications in the background, 
 ## Permissions
 
 ### Required Permissions
-- `RECEIVE_SMS` - Receive incoming SMS messages
-- `READ_SMS` - Read SMS content for processing
 - `INTERNET` - Send HTTP requests to configured endpoints
-- `RECEIVE_BOOT_COMPLETED` - Auto-start on device boot
-- `FOREGROUND_SERVICE` - Run background service reliably
-- `WAKE_LOCK` - Keep device awake during processing
 
 ### Protected Permissions
 - `BIND_NOTIFICATION_LISTENER_SERVICE` - Monitor app notifications (user grants via Settings > Notification access)
@@ -47,20 +40,20 @@ A minimal-UI Android app that monitors SMS and notifications in the background, 
 ### Intentionally NOT requested (Google Play policy)
 - `QUERY_ALL_PACKAGES` - app picker relies on `<queries>` in the manifest instead
 - `PACKAGE_USAGE_STATS` - MRU sorting now comes from the user's own picks, not usage stats
+- `RECEIVE_SMS` / `READ_SMS` - SMS support was removed after a Play rejection (Policy Declaration for SMS/Call Log)
+- `FOREGROUND_SERVICE`, `RECEIVE_BOOT_COMPLETED`, `WAKE_LOCK`, `POST_NOTIFICATIONS` - only served the removed SMS path
 
 See `docs/play-store/` for the privacy policy and the Play Console submission checklist.
 
 ## Project Structure
 
 ```
-app/src/main/java/com/zerodev/smsforwarder/
+app/src/main/java/id/majopay/ngateway/
 ├── data/
 │   ├── local/          # Room database, DAOs, entities
 │   ├── remote/         # HTTP client and API services
 │   ├── repository/     # Repository implementations
-│   ├── receiver/       # BroadcastReceivers (SMS, boot)
-│   ├── service/        # Foreground services
-│   └── worker/         # WorkManager workers
+│   └── service/        # NotificationListenerService
 ├── domain/
 │   ├── model/          # Domain models
 │   └── usecase/        # Business logic
@@ -71,11 +64,10 @@ app/src/main/java/com/zerodev/smsforwarder/
 ## Key Components
 
 ### Message Processing Flow
-1. **SmsReceiver** / **NotifRouterService** - Intercept SMS/notifications
-2. **SmsForwardingService** - Process messages in foreground service
-3. **SmsForwardingUseCase** - Rule matching and HTTP forwarding
-4. **HttpClient** - HTTP requests with retry logic
-5. **HistoryRepository** - Log all forwarding attempts
+1. **NotifRouterService** - Intercept notifications
+2. **ForwardingUseCase** - Rule matching and HTTP forwarding
+3. **HttpClient** - HTTP requests with retry logic
+4. **HistoryRepository** - Log all forwarding attempts
 
 ### Database Schema
 - **Rules**: ID, name, source type, pattern, endpoint, method, headers
@@ -93,7 +85,7 @@ app/src/main/java/com/zerodev/smsforwarder/
 ```bash
 # Clone repository
 git clone <repository-url>
-cd SMSForwarder
+cd majopay-qris
 
 # Build debug APK
 ./gradlew assembleDebug
@@ -137,7 +129,6 @@ git tag v1.0.0 && git push origin v1.0.0
 ### Performance Optimizations
 - **Pagination**: Load history in chunks (15 items per page)
 - **Efficient Queries**: Optimized database queries with proper indexing
-- **Background Processing**: WorkManager for reliable background execution
 - **Memory Management**: Proper lifecycle management and resource cleanup
 
 ## Contributing

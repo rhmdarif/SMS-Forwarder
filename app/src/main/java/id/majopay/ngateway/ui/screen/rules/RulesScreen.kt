@@ -25,7 +25,6 @@ import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Inbox
 import androidx.compose.material.icons.outlined.NotificationsActive
 import androidx.compose.material.icons.outlined.Send
-import androidx.compose.material.icons.outlined.Sms
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -52,7 +51,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import id.majopay.ngateway.domain.model.Rule
-import id.majopay.ngateway.domain.model.SourceType
 import id.majopay.ngateway.ui.component.CredentialsBanner
 import id.majopay.ngateway.ui.component.FlatCard
 import id.majopay.ngateway.ui.component.FriendlyEmptyState
@@ -191,15 +189,11 @@ private fun RuleCard(
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
-    val isSms = rule.source == SourceType.SMS
-    val sourceIcon: ImageVector = if (isSms) Icons.Outlined.Sms else Icons.Outlined.NotificationsActive
-    val sourceTone = if (isSms) Tone.Primary else Tone.Purple
-
     FlatCard(onClick = onEdit) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconBubble(
-                icon = sourceIcon,
-                tone = sourceTone,
+                icon = Icons.Outlined.NotificationsActive,
+                tone = Tone.Purple,
                 size = 44.dp,
                 iconSize = 22.dp,
                 shape = MaterialTheme.shapes.small
@@ -214,7 +208,7 @@ private fun RuleCard(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = if (isSms) "Pesan SMS" else "Notifikasi aplikasi",
+                    text = "Notifikasi aplikasi",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -239,7 +233,7 @@ private fun RuleCard(
                 text = if (rule.isRegex) "Regex" else "Substring",
                 tone = if (rule.isRegex) Tone.Teal else Tone.Neutral
             )
-            if (!isSms && !rule.packageFilter.isNullOrBlank()) {
+            if (!rule.packageFilter.isNullOrBlank()) {
                 StatusChip(
                     text = rule.packageFilter,
                     tone = Tone.Purple,
@@ -316,8 +310,8 @@ private fun HowItWorksCard() {
         Spacer(modifier = Modifier.height(14.dp))
         HowItWorksStep(
             number = 1,
-            icon = Icons.Outlined.Sms,
-            text = "Setiap SMS atau notifikasi yang masuk dicek satu per satu."
+            icon = Icons.Outlined.NotificationsActive,
+            text = "Setiap notifikasi yang masuk dicek satu per satu."
         )
         Spacer(modifier = Modifier.height(10.dp))
         HowItWorksStep(

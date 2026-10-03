@@ -13,7 +13,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Repository for managing forwarding history (SMS and notifications).
+ * Repository for managing forwarding history (notifications).
  * Provides a clean API for history operations.
  */
 @Singleton
@@ -45,7 +45,7 @@ class HistoryRepository @Inject constructor(
     
     /**
      * Get history entries by source type.
-     * @param sourceType The source type ("SMS" or "NOTIFICATION")
+     * @param sourceType The source type ("NOTIFICATION")
      * @return Flow of history entries for the specified source type
      */
     fun getHistoryBySourceType(sourceType: String): Flow<List<ForwardingHistory>> {

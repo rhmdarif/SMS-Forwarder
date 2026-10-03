@@ -6,7 +6,6 @@ import id.majopay.ngateway.data.local.entity.RuleEntity
 import id.majopay.ngateway.data.local.entity.HistoryEntity
 import id.majopay.ngateway.domain.model.Rule
 import id.majopay.ngateway.domain.model.ForwardingHistory
-import id.majopay.ngateway.domain.model.SmsMessage
 import id.majopay.ngateway.domain.model.SourceType
 import id.majopay.ngateway.domain.model.ForwardingStatus
 
@@ -31,7 +30,7 @@ object EntityMapper {
         val sourceType = try {
             SourceType.valueOf(source)
         } catch (e: Exception) {
-            SourceType.SMS // Default fallback
+            SourceType.NOTIFICATION // Default fallback
         }
         
         return Rule(

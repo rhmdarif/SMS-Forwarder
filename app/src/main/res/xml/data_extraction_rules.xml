@@ -3,7 +3,7 @@
    Data extraction rules untuk API 31+.
    Kredensial API dikecualikan dari cloud backup dan device transfer karena terikat
    Android Keystore perangkat asal (lihat backup_rules.xml).
-   Database Room (berisi isi SMS/notifikasi) dikecualikan dari cloud backup dan transfer.
+   Database Room (berisi isi notifikasi) dikecualikan dari cloud backup dan transfer.
 -->
 <data-extraction-rules>
     <cloud-backup>

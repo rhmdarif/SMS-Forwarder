@@ -4,7 +4,7 @@
    Kredensial API disimpan di EncryptedSharedPreferences dan dikunci ke Android Keystore
    perangkat ini, sehingga tidak boleh ikut backup: hasil restore di perangkat lain tidak
    akan bisa didekripsi dan hanya menyebabkan crash saat dibaca.
-   Database Room juga dikecualikan: tabel history menyimpan isi SMS dan notifikasi user,
+   Database Room juga dikecualikan: tabel history menyimpan isi notifikasi user,
    jadi tidak boleh ikut naik ke cloud backup (kebijakan data pribadi Google Play).
 -->
 <full-backup-content>

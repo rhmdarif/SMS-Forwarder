@@ -4,8 +4,8 @@ import retrofit2.Response
 import retrofit2.http.*
 
 /**
- * Retrofit API service for SMS forwarding to external endpoints.
- * This service provides a generic HTTP client for forwarding SMS data to any API.
+ * Retrofit API service for forwarding to external endpoints.
+ * This service provides a generic HTTP client for forwarding notification data to any API.
  */
 interface ForwardingApiService {
     

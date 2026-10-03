@@ -5,7 +5,7 @@ import id.majopay.ngateway.data.local.entity.RuleEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Data Access Object for forwarding rules (SMS and notifications).
+ * Data Access Object for forwarding rules (notifications).
  * Provides database operations for managing forwarding rules.
  */
 @Dao
@@ -27,7 +27,7 @@ interface RuleDao {
     
     /**
      * Get active rules for a specific source type.
-     * @param sourceType The source type ("SMS" or "NOTIFICATION")
+     * @param sourceType The source type ("NOTIFICATION")
      * @return Flow of active rules for the specified source type
      */
     @Query("SELECT * FROM rules WHERE is_active = 1 AND source = :sourceType ORDER BY created_at DESC")
@@ -94,7 +94,7 @@ interface RuleDao {
     
     /**
      * Get count of active rules by source type.
-     * @param sourceType The source type ("SMS" or "NOTIFICATION")
+     * @param sourceType The source type ("NOTIFICATION")
      * @return Number of active rules for the specified source type
      */
     @Query("SELECT COUNT(*) FROM rules WHERE is_active = 1 AND source = :sourceType")

@@ -11,7 +11,6 @@ import id.majopay.ngateway.domain.model.ApiCredentials
 import id.majopay.ngateway.domain.model.ForwardingHistory
 import id.majopay.ngateway.domain.model.ForwardingStatus
 import id.majopay.ngateway.domain.model.Rule
-import id.majopay.ngateway.domain.model.SmsMessage
 import id.majopay.ngateway.domain.model.SourceType
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -23,11 +22,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Use case for handling SMS and notification forwarding business logic.
+ * Use case for handling notification forwarding business logic.
  * This is the main orchestrator that coordinates rule matching and HTTP forwarding.
  */
 @Singleton
-class SmsForwardingUseCase @Inject constructor(
+class ForwardingUseCase @Inject constructor(
     private val ruleRepository: RuleRepository,
     private val historyRepository: HistoryRepository,
     private val httpClient: HttpClient,
@@ -36,7 +35,7 @@ class SmsForwardingUseCase @Inject constructor(
 ) {
 
     companion object {
-        private const val TAG = "SmsForwardingUseCase"
+        private const val TAG = "ForwardingUseCase"
         const val CREDENTIALS_MISSING_MESSAGE =
             "Kredensial API belum diatur. Buka Pengaturan untuk mengisi api_key dan api_secret."
     }
@@ -70,42 +69,6 @@ class SmsForwardingUseCase @Inject constructor(
                 encode = false
             ),
             snapshotHeaders = wireHeaders + (ApiCredentials.SECRET_HEADER to credentials.maskedSecret)
-        )
-    }
-    
-    /**
-     * Process an incoming SMS message by finding matching rules and forwarding to their endpoints.
-     * This method runs in parallel for all matching rules and ALWAYS logs the SMS to history for debugging.
-     * 
-     * @param smsMessage The incoming SMS message to process
-     * @return List of ForwardingHistory entries representing the forwarding attempts
-     */
-    suspend fun processSms(smsMessage: SmsMessage): List<ForwardingHistory> {
-        Log.d(TAG, "📱 === SMS RECEIVED ===")
-        Log.d(TAG, "📱 From: ${smsMessage.getMaskedSender()}")
-        Log.d(TAG, "📱 Body: ${smsMessage.body}")
-        Log.d(TAG, "📱 Timestamp: ${smsMessage.timestamp}")
-        
-        if (!smsMessage.isValid()) {
-            Log.w(TAG, "❌ Invalid SMS message, saving to history as invalid")
-            val invalidHistory = createFailedHistory(
-                sourceType = "SMS",
-                senderNumber = smsMessage.sender,
-                messageBody = smsMessage.body,
-                errorMessage = "Invalid SMS message (empty body or sender)",
-                timestamp = smsMessage.timestamp
-            )
-            historyRepository.createHistory(invalidHistory)
-            return emptyList()
-        }
-        
-        return processMessage(
-            content = smsMessage.body,
-            sourceType = SourceType.SMS,
-            packageName = null,
-            senderNumber = smsMessage.sender,
-            messageBody = smsMessage.body,
-            timestamp = smsMessage.timestamp
         )
     }
     
@@ -172,12 +135,11 @@ class SmsForwardingUseCase @Inject constructor(
     }
     
     /**
-     * Generic message processing for both SMS and notifications.
+     * Generic message processing: rule matching lalu forward paralel.
      * 
-     * @param content Content to match against (SMS body or notification title+text)
-     * @param sourceType Source type (SMS or NOTIFICATION)
+     * @param content Content to match against (notification title+text)
+     * @param sourceType Source type
      * @param packageName Package name for notifications
-     * @param senderNumber Phone number for SMS
      * @param sourceAppName App name for notifications
      * @param notificationTitle Notification title
      * @param notificationText Notification text
@@ -190,7 +152,6 @@ class SmsForwardingUseCase @Inject constructor(
         content: String,
         sourceType: SourceType,
         packageName: String? = null,
-        senderNumber: String? = null,
         sourceAppName: String? = null,
         notificationTitle: String? = null,
         notificationText: String? = null,
@@ -209,7 +170,6 @@ class SmsForwardingUseCase @Inject constructor(
             Log.d(TAG, "No active ${sourceType.name} rules found, saving message as no rules configured")
             val noRulesHistory = createFailedHistory(
                 sourceType = sourceType.name,
-                senderNumber = senderNumber,
                 sourcePackage = packageName,
                 sourceAppName = sourceAppName,
                 notificationTitle = notificationTitle,
@@ -238,7 +198,6 @@ class SmsForwardingUseCase @Inject constructor(
             Log.d(TAG, "No matching rules found, saving message as no match")
             val noMatchHistory = createFailedHistory(
                 sourceType = sourceType.name,
-                senderNumber = senderNumber,
                 sourcePackage = packageName,
                 sourceAppName = sourceAppName,
                 notificationTitle = notificationTitle,
@@ -259,7 +218,6 @@ class SmsForwardingUseCase @Inject constructor(
                         rule = rule,
                         content = content,
                         sourceType = sourceType.name,
-                        senderNumber = senderNumber,
                         sourcePackage = packageName,
                         sourceAppName = sourceAppName,
                         notificationTitle = notificationTitle,
@@ -278,8 +236,7 @@ class SmsForwardingUseCase @Inject constructor(
      * 
      * @param rule The rule configuration
      * @param content Content that matched the rule
-     * @param sourceType Source type ("SMS" or "NOTIFICATION")
-     * @param senderNumber Phone number for SMS
+     * @param sourceType Source type ("NOTIFICATION")
      * @param sourcePackage Package name for notifications
      * @param sourceAppName App name for notifications
      * @param notificationTitle Notification title
@@ -293,7 +250,6 @@ class SmsForwardingUseCase @Inject constructor(
         rule: Rule,
         content: String,
         sourceType: String,
-        senderNumber: String? = null,
         sourcePackage: String? = null,
         sourceAppName: String? = null,
         notificationTitle: String? = null,
@@ -304,20 +260,14 @@ class SmsForwardingUseCase @Inject constructor(
     ): ForwardingHistory {
         Log.d(TAG, "Forwarding ${sourceType.lowercase()} to rule: ${rule.name}")
 
-        val requestBody = when (sourceType) {
-            "SMS" -> httpClient.buildSmsPayloadJson(
-                SmsMessage(messageBody, senderNumber ?: "", timestamp)
-            )
-            "NOTIFICATION" -> httpClient.buildNotificationPayloadJson(
-                packageName = sourcePackage ?: "",
-                appLabel = sourceAppName ?: "",
-                title = notificationTitle ?: "",
-                text = notificationText ?: "",
-                postTime = timestamp.toEpochMilliseconds(),
-                extras = extras ?: emptyMap()
-            )
-            else -> throw IllegalArgumentException("Unknown source type: $sourceType")
-        }
+        val requestBody = httpClient.buildNotificationPayloadJson(
+            packageName = sourcePackage ?: "",
+            appLabel = sourceAppName ?: "",
+            title = notificationTitle ?: "",
+            text = notificationText ?: "",
+            postTime = timestamp.toEpochMilliseconds(),
+            extras = extras ?: emptyMap()
+        )
         val credentials = credentialRepository.current()
         val target = credentials?.let { resolveTarget(it, sourceType) }
         // Tanpa kredensial, snapshot hanya berisi base URL + header default (tanpa secret).
@@ -329,7 +279,6 @@ class SmsForwardingUseCase @Inject constructor(
         val initialHistory = ForwardingHistory(
             ruleId = rule.id,
             matchedRule = true,
-            senderNumber = senderNumber,
             messageBody = messageBody,
             sourceType = sourceType,
             sourcePackage = sourcePackage,
@@ -507,7 +456,6 @@ class SmsForwardingUseCase @Inject constructor(
      */
     private fun createFailedHistory(
         sourceType: String,
-        senderNumber: String? = null,
         sourcePackage: String? = null,
         sourceAppName: String? = null,
         notificationTitle: String? = null,
@@ -519,7 +467,6 @@ class SmsForwardingUseCase @Inject constructor(
         return ForwardingHistory(
             ruleId = null,
             matchedRule = false,
-            senderNumber = senderNumber,
             messageBody = messageBody,
             sourceType = sourceType,
             sourcePackage = sourcePackage,

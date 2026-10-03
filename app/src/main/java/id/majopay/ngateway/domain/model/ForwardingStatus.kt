@@ -1,7 +1,7 @@
 package id.majopay.ngateway.domain.model
 
 /**
- * Enum representing the status of a forwarding attempt (SMS or notification).
+ * Enum representing the status of a forwarding attempt (notification).
  */
 enum class ForwardingStatus {
     /**

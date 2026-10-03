@@ -2,31 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- SMS and network permissions -->
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     
-    <!-- Declare that telephony hardware is not required -->
-    <uses-feature 
-        android:name="android.hardware.telephony" 
-        android:required="false" />
-    
-    <!-- Boot receiver permission -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    
-    <!-- Foreground service: tipe specialUse (pemantauan notifikasi/SMS dari sumber yang
-         dipilih user). Tipe dataSync sengaja tidak dipakai: Android 15+ membatasinya 6 jam/hari
-         dan melarangnya dimulai dari BOOT_COMPLETED. Tipe ini wajib dideklarasikan di
-         Play Console (App content > Foreground service permissions) beserta video demo. -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
-    
-    <!-- Wake lock permission for background processing -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    
-    <!-- Notification permission for Android 13+ -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" android:minSdkVersion="33" />
+    <!-- Sengaja TIDAK diminta: RECEIVE_SMS/READ_SMS (fitur SMS dihapus karena izin SMS dibatasi
+         Google Play), serta FOREGROUND_SERVICE*, RECEIVE_BOOT_COMPLETED, WAKE_LOCK, dan
+         POST_NOTIFICATIONS. NotificationListenerService di-bind sistem dan otomatis tersambung
+         lagi setelah reboot, jadi tidak butuh foreground service atau boot receiver. -->
     
     <!-- Notification listener permission -->
     <!-- This is a protected permission, but users can grant it through Settings > Apps > Special access > Notification access -->
@@ -87,7 +68,7 @@
     </queries>
 
     <application
-        android:name=".SmsForwarderApplication"
+        android:name=".NGatewayApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -95,65 +76,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SMSForwarder"
+        android:theme="@style/Theme.NGateway"
         tools:targetApi="31">
-
-        <!-- Disable default WorkManager initialization -->
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-        </provider>
 
         <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.SMSForwarder">
+            android:theme="@style/Theme.NGateway">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- SMS Receiver -->
-        <receiver
-            android:name=".data.receiver.SmsReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BROADCAST_SMS">
-            <intent-filter android:priority="1000">
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>
-        </receiver>
-
-        <!-- Boot Receiver -->
-        <receiver
-            android:name=".data.receiver.BootReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter android:priority="1000">
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-            </intent-filter>
-        </receiver>
-
-        <!-- SMS Forwarding Service -->
-        <service
-            android:name=".data.service.SmsForwardingService"
-            android:enabled="true"
-            android:exported="false"
-            android:foregroundServiceType="specialUse">
-            <!-- Wajib untuk tipe specialUse: penjelasan singkat yang dibaca reviewer Play. -->
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Memantau notifikasi dan SMS masuk dari aplikasi/pengirim yang dipilih pengguna secara real-time, lalu meneruskan pesan yang cocok aturan ke aplikasi milik pengguna melalui relay api-proxy.majopay.id." />
-        </service>
 
         <!-- Notification Router Service -->
         <service

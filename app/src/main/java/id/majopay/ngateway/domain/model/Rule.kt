@@ -3,13 +3,13 @@ package id.majopay.ngateway.domain.model
 import kotlinx.datetime.Instant
 
 /**
- * Domain model representing a forwarding rule for SMS or notifications.
+ * Domain model representing a forwarding rule for notifications.
  * This is the business logic representation, separate from database entities.
  * 
  * @property id Unique identifier for the rule
  * @property name Human-readable name for the rule
  * @property pattern Regex or substring pattern to match against content
- * @property source Source type - SMS or NOTIFICATION
+ * @property source Source type (NOTIFICATION)
  * @property packageFilter Package name filter for notifications (required if source == NOTIFICATION, null means all packages)
  * @property isRegex Whether the pattern should be treated as regex (true) or substring (false)
  * @property endpoint HTTP API endpoint URL
@@ -42,7 +42,6 @@ data class Rule(
 ) {
     /**
      * Check if the given content matches this rule's pattern.
-     * For SMS, content is the SMS body.
      * For notifications, content is typically title + text combined.
      * 
      * @param content The content to match against
@@ -63,15 +62,13 @@ data class Rule(
     
     /**
      * Check if this rule applies to the given package name.
-     * For SMS rules, this always returns true.
-     * For notification rules, checks against packageFilter.
+     * Checks against packageFilter (null means all packages).
      * 
      * @param packageName The package name to check
      * @return true if the rule applies to this package, false otherwise
      */
     fun appliesToPackage(packageName: String): Boolean {
         return when (source) {
-            SourceType.SMS -> true
             SourceType.NOTIFICATION -> packageFilter == null || packageFilter == packageName
         }
     }

@@ -42,8 +42,8 @@ android {
         applicationId = "id.majopay.ngateway"
         minSdk = 29
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 4
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -158,11 +158,6 @@ dependencies {
     implementation("androidx.room:room-paging:2.7.2")
     ksp("androidx.room:room-compiler:2.7.2")
 
-    // WorkManager
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
-    implementation(libs.androidx.hilt.work)
-    ksp(libs.androidx.hilt.compiler)
-    
     // Networking
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -195,7 +190,6 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("androidx.room:room-testing:2.7.2")
-    testImplementation("androidx.work:work-testing:2.9.0")
     
     // Android Testing
     androidTestImplementation(libs.androidx.junit)

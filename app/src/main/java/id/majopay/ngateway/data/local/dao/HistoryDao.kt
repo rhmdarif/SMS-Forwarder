@@ -14,7 +14,7 @@ data class StatusCount(
 )
 
 /**
- * Data Access Object for forwarding history (SMS and notifications).
+ * Data Access Object for forwarding history (notifications).
  * Provides database operations for managing forwarding attempt logs.
  */
 @Dao
@@ -37,7 +37,7 @@ interface HistoryDao {
     
     /**
      * Get history entries by source type.
-     * @param sourceType The source type ("SMS" or "NOTIFICATION")
+     * @param sourceType The source type ("NOTIFICATION")
      * @return Flow of history entries for the specified source type
      */
     @Query("SELECT * FROM forwarding_history WHERE source_type = :sourceType ORDER BY timestamp DESC LIMIT 1000")

@@ -1,6 +1,5 @@
 package id.majopay.ngateway.ui.screen.settings
 
-import android.Manifest
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
@@ -27,11 +26,9 @@ import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.NotificationsActive
-import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.Policy
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Sms
 import androidx.compose.material.icons.outlined.TipsAndUpdates
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
@@ -59,9 +56,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import id.majopay.ngateway.BuildConfig
 import id.majopay.ngateway.data.repository.AppRepository
 import id.majopay.ngateway.data.service.NotifRouterService
@@ -86,7 +82,7 @@ import id.majopay.ngateway.ui.screen.setup.rememberCredentialsFormState
 import id.majopay.ngateway.ui.theme.Tone
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onCredentialsCleared: () -> Unit = {},
@@ -97,18 +93,12 @@ fun SettingsScreen(
     val scope = rememberCoroutineScope()
     val credentials by credentialsViewModel.credentials.collectAsState()
 
-    val permissionsToRequest = mutableListOf(
-        Manifest.permission.RECEIVE_SMS,
-        Manifest.permission.READ_SMS
-    ).apply {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            add(Manifest.permission.POST_NOTIFICATIONS)
-        }
+    var isNotificationListenerEnabled by remember {
+        mutableStateOf(NotifRouterService.isServiceEnabled(context))
     }
-
-    val permissionsState = rememberMultiplePermissionsState(permissions = permissionsToRequest)
-    val isNotificationListenerEnabled = remember(context) {
-        NotifRouterService.isServiceEnabled(context)
+    // Cek ulang saat kembali dari layar Akses Notifikasi sistem agar status langsung berubah.
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        isNotificationListenerEnabled = NotifRouterService.isServiceEnabled(context)
     }
 
     val openNotificationListenerSettings = {
@@ -117,7 +107,7 @@ fun SettingsScreen(
     }
 
     // Prominent disclosure (kebijakan User Data Google Play): dialog penjelasan data harus
-    // muncul dan disetujui SEBELUM dialog izin sistem / layar akses notifikasi dibuka.
+    // muncul dan disetujui SEBELUM layar akses notifikasi dibuka.
     var pendingDisclosure by remember { mutableStateOf<SensitiveAccess?>(null) }
     pendingDisclosure?.let { access ->
         DataDisclosureDialog(
@@ -125,7 +115,6 @@ fun SettingsScreen(
             onAccept = {
                 pendingDisclosure = null
                 when (access) {
-                    SensitiveAccess.Sms -> permissionsState.launchMultiplePermissionRequest()
                     SensitiveAccess.Notification -> openNotificationListenerSettings()
                 }
             },
@@ -171,29 +160,6 @@ fun SettingsScreen(
 
             item {
                 SectionCard(title = "Izin akses", icon = Icons.Outlined.Lock, tone = Tone.Orange) {
-                    PermissionItem(
-                        title = "Izin SMS",
-                        description = "Biar aplikasi bisa mendeteksi SMS dari pengirim yang kamu pantau.",
-                        icon = Icons.Outlined.Sms,
-                        tone = Tone.Primary,
-                        isGranted = permissionsState.permissions.filter {
-                            it.permission == Manifest.permission.RECEIVE_SMS ||
-                                it.permission == Manifest.permission.READ_SMS
-                        }.all { it.status.isGranted },
-                        onRequest = { pendingDisclosure = SensitiveAccess.Sms }
-                    )
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        PermissionItem(
-                            title = "Izin notifikasi",
-                            description = "Dibutuhkan untuk layanan latar belakang (Android 13+).",
-                            icon = Icons.Outlined.Notifications,
-                            tone = Tone.Purple,
-                            isGranted = permissionsState.permissions.find {
-                                it.permission == Manifest.permission.POST_NOTIFICATIONS
-                            }?.status?.isGranted ?: false,
-                            onRequest = { permissionsState.launchMultiplePermissionRequest() }
-                        )
-                    }
                     PermissionItem(
                         title = "Akses notifikasi",
                         description = "Biar aplikasi bisa mendeteksi notifikasi dari aplikasi yang kamu pantau.",
@@ -241,12 +207,6 @@ fun SettingsScreen(
             item {
                 SectionCard(title = "Tips singkat", icon = Icons.Outlined.TipsAndUpdates, tone = Tone.Teal) {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        InfoBanner(
-                            icon = Icons.Outlined.Sms,
-                            tone = Tone.Info,
-                            title = "Coba SMS",
-                            message = "Izinkan akses SMS, buat aturan, lalu kirim SMS ke nomormu untuk mengujinya."
-                        )
                         InfoBanner(
                             icon = Icons.Outlined.NotificationsActive,
                             tone = Tone.Info,

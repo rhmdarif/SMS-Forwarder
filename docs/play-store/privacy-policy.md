@@ -1,29 +1,27 @@
 # Kebijakan Privasi Majopay Gateway
 
-Terakhir diperbarui: 13 September 2026
+Terakhir diperbarui: 3 Oktober 2026
 
 Kebijakan ini menjelaskan data apa yang diakses oleh aplikasi Android **Majopay Gateway** (package `id.majopay.ngateway`), untuk apa data itu dipakai, ke mana data dikirim, dan hak kamu atas data tersebut. Dengan memasang dan memakai aplikasi ini, kamu menyetujui kebijakan ini.
 
-Majopay Gateway adalah alat pemantau notifikasi. Aplikasi mendeteksi notifikasi dari aplikasi yang kamu pilih untuk dipantau (dan, jika kamu izinkan, SMS dari pengirim tertentu), mencocokkannya dengan aturan yang kamu buat, lalu meneruskan pesan yang cocok ke aplikasi atau endpoint milikmu secara otomatis melalui relay Majopay.
+Majopay Gateway adalah alat pemantau notifikasi. Aplikasi mendeteksi notifikasi dari aplikasi yang kamu pilih untuk dipantau, mencocokkannya dengan aturan yang kamu buat, lalu meneruskan pesan yang cocok ke aplikasi atau endpoint milikmu secara otomatis melalui relay Majopay.
 
 ## 1. Data yang diakses
 
 | Data | Sumber | Dipakai untuk |
 |---|---|---|
-| Nomor pengirim dan isi SMS masuk | Izin `RECEIVE_SMS` dan `READ_SMS` | Mendeteksi SMS dari pengirim yang kamu pantau sesuai aturan |
 | Nama aplikasi, judul, dan isi teks notifikasi dari aplikasi lain | Akses Notifikasi (Notification Listener) | Mendeteksi notifikasi dari aplikasi yang kamu pantau sesuai aturan |
 | Daftar aplikasi yang bisa diluncurkan di perangkat | Package visibility (`<queries>`) | Menampilkan pilihan aplikasi saat kamu membuat aturan notifikasi |
 | API Key dan API Secret Majopay | Diketik oleh kamu | Mengautentikasi pengiriman ke relay dan menentukan endpoint tujuan milikmu |
 
-Aplikasi **tidak** mengakses kontak, lokasi, kamera, mikrofon, file, riwayat panggilan, atau mengirim SMS.
+Aplikasi **tidak** mengakses SMS, kontak, lokasi, kamera, mikrofon, file, atau riwayat panggilan.
 
 ## 2. Data yang dikirim ke server
 
-Hanya SMS atau notifikasi yang **cocok dengan aturan yang kamu buat** yang dikirim keluar perangkat. Aplikasi mengirimnya ke relay `api-proxy.majopay.id`, yang meneruskannya ke aplikasi atau endpoint yang kamu daftarkan di dashboard Majopay. Untuk setiap pesan yang cocok, aplikasi mengirim:
+Hanya notifikasi yang **cocok dengan aturan yang kamu buat** yang dikirim keluar perangkat. Aplikasi mengirimnya ke relay `api-proxy.majopay.id`, yang meneruskannya ke aplikasi atau endpoint yang kamu daftarkan di dashboard Majopay. Untuk setiap pesan yang cocok, aplikasi mengirim:
 
-- jenis sumber (SMS atau notifikasi),
-- nomor pengirim (untuk SMS) atau nama paket dan nama aplikasi (untuk notifikasi),
-- isi pesan atau judul dan teks notifikasi,
+- nama paket dan nama aplikasi pengirim notifikasi,
+- judul dan teks notifikasi,
 - waktu pesan diterima,
 - API Key kamu sebagai bagian dari alamat endpoint dan API Secret sebagai header autentikasi.
 
@@ -31,7 +29,7 @@ Pengiriman selalu memakai koneksi terenkripsi HTTPS. Pesan yang **tidak** cocok 
 
 ## 3. Data yang disimpan di perangkat
 
-- **Riwayat**: semua SMS dan notifikasi yang diproses, termasuk yang tidak cocok aturan, dicatat di database lokal aplikasi supaya kamu bisa memeriksa kenapa suatu pesan diteruskan atau tidak. Data ini hanya ada di perangkat dan tidak ikut cloud backup Android.
+- **Riwayat**: semua notifikasi yang diproses, termasuk yang tidak cocok aturan, dicatat di database lokal aplikasi supaya kamu bisa memeriksa kenapa suatu pesan diteruskan atau tidak. Data ini hanya ada di perangkat dan tidak ikut cloud backup Android.
 - **Aturan**: pola pencocokan yang kamu buat.
 - **Kredensial API**: disimpan terenkripsi menggunakan Android Keystore dan tidak ikut backup maupun transfer perangkat.
 
@@ -55,13 +53,10 @@ Setelah diteruskan, data berada di aplikasi atau endpoint milikmu dan tunduk pad
 
 | Izin | Alasan | Cara mencabut |
 |---|---|---|
-| SMS (`RECEIVE_SMS`, `READ_SMS`) | Mendeteksi SMS dari pengirim yang dipantau | Setelan Android > Aplikasi > Majopay Gateway > Izin |
 | Akses Notifikasi | Mendeteksi notifikasi dari aplikasi yang dipantau | Setelan Android > Notifikasi > Akses notifikasi perangkat & aplikasi |
-| Notifikasi (`POST_NOTIFICATIONS`) | Menampilkan status layanan pemantauan | Setelan Android > Aplikasi > Majopay Gateway > Notifikasi |
 | Internet | Mengirim pesan yang cocok ke relay Majopay | Tidak bisa dicabut, tetapi tanpa kredensial tidak ada data yang dikirim |
-| Jalankan saat boot | Memulai kembali pemantauan setelah perangkat dinyalakan | Uninstall aplikasi |
 
-Sebelum meminta izin SMS atau akses notifikasi, aplikasi menampilkan penjelasan dan meminta persetujuanmu terlebih dahulu.
+Sebelum membuka layar akses notifikasi, aplikasi menampilkan penjelasan dan meminta persetujuanmu terlebih dahulu.
 
 ## 7. Keamanan
 

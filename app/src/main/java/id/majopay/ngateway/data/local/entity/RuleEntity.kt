@@ -6,12 +6,12 @@ import androidx.room.PrimaryKey
 import kotlinx.datetime.Instant
 
 /**
- * Database entity representing a forwarding rule for SMS or notifications.
+ * Database entity representing a forwarding rule for notifications.
  * 
  * @property id Unique identifier for the rule
  * @property name Human-readable name for the rule
  * @property pattern Regex or substring pattern to match against content
- * @property source Source type - "SMS" or "NOTIFICATION"
+ * @property source Source type - "NOTIFICATION"
  * @property packageFilter Package name filter for notifications (null means all packages)
  * @property isRegex Whether the pattern should be treated as regex (true) or substring (false)
  * @property endpoint HTTP API endpoint URL
@@ -30,7 +30,7 @@ data class RuleEntity(
     val pattern: String,
     
     @ColumnInfo(name = "source")
-    val source: String, // "SMS" or "NOTIFICATION"
+    val source: String, // "NOTIFICATION"
     
     @ColumnInfo(name = "package_filter")
     val packageFilter: String? = null,

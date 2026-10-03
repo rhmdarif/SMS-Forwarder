@@ -8,18 +8,18 @@ import androidx.room.Index
 import kotlinx.datetime.Instant
 
 /**
- * Database entity representing a forwarding attempt history log for SMS or notifications.
+ * Database entity representing a forwarding attempt history log for notifications.
  * 
  * @property id Unique identifier for the history entry
  * @property ruleId Foreign key reference to the rule that triggered this forwarding (null if no rule matched)
  * @property matchedRule Whether this message/notification matched any forwarding rule
- * @property senderNumber The sender phone number (for SMS only, null for notifications)
- * @property messageBody The message content (SMS body or notification text)
- * @property sourceType Source type - "SMS" or "NOTIFICATION"
- * @property sourcePackage Package name (for notifications only, null for SMS)
- * @property sourceAppName App name (for notifications only, null for SMS)
- * @property notificationTitle Notification title (for notifications only, null for SMS)
- * @property notificationText Notification text (for notifications only, null for SMS)
+ * @property senderNumber Legacy: nomor pengirim SMS (sumber SMS sudah dihapus, selalu null)
+ * @property messageBody The message content (notification text)
+ * @property sourceType Source type - "NOTIFICATION"
+ * @property sourcePackage Package name (for notifications)
+ * @property sourceAppName App name (for notifications)
+ * @property notificationTitle Notification title (for notifications)
+ * @property notificationText Notification text (for notifications)
  * @property endpoint The HTTP endpoint used for forwarding
  * @property method The HTTP method used for forwarding
  * @property requestHeaders JSON string of request headers
@@ -58,16 +58,16 @@ data class HistoryEntity(
     @ColumnInfo(name = "matched_rule")
     val matchedRule: Boolean = false, // Whether message matched any rule
     
-    // SMS-specific fields
+    // Legacy (sumber SMS sudah dihapus)
     @ColumnInfo(name = "sender_number")
-    val senderNumber: String? = null, // Phone number for SMS, null for notifications
+    val senderNumber: String? = null, // Selalu null untuk data baru
     
     @ColumnInfo(name = "message_body")
-    val messageBody: String, // SMS body or notification content
+    val messageBody: String, // Notification content
     
     // Source information
     @ColumnInfo(name = "source_type")
-    val sourceType: String, // "SMS" or "NOTIFICATION"
+    val sourceType: String, // "NOTIFICATION"
     
     @ColumnInfo(name = "source_package")
     val sourcePackage: String? = null, // Package name for notifications

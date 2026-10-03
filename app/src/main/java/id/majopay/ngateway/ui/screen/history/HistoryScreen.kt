@@ -47,7 +47,6 @@ import androidx.compose.material.icons.outlined.NotificationsActive
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.SearchOff
-import androidx.compose.material.icons.outlined.Sms
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
@@ -532,11 +531,9 @@ private fun ForwardingHistory.statusInfo(): StatusInfo = when (status) {
     ForwardingStatus.NO_RULE_MATCHED -> StatusInfo("Tanpa aturan", Tone.Neutral, Icons.Outlined.Cancel)
 }
 
-private fun ForwardingHistory.iconForSource(): ImageVector =
-    if (isSms()) Icons.Outlined.Sms else Icons.AutoMirrored.Outlined.Chat
+private fun ForwardingHistory.iconForSource(): ImageVector = Icons.AutoMirrored.Outlined.Chat
 
-private fun ForwardingHistory.sourceTone(): Tone =
-    if (isSms()) Tone.Primary else Tone.Purple
+private fun ForwardingHistory.sourceTone(): Tone = Tone.Purple
 
 // ---------------------------------------------------------------------------
 // Dialog detail
@@ -596,7 +593,7 @@ private fun HistoryDetailDialog(
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = if (historyEntry.isSms()) "Pesan SMS" else (historyEntry.sourcePackage ?: "Notifikasi"),
+                        text = historyEntry.sourcePackage ?: "Notifikasi",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
@@ -627,7 +624,7 @@ private fun HistoryDetailDialog(
 
             DetailSection(title = "Isi pesan") {
                 ExpandableText(
-                    title = if (!historyEntry.isSms()) historyEntry.notificationTitle?.takeIf { it.isNotBlank() } else null,
+                    title = historyEntry.notificationTitle?.takeIf { it.isNotBlank() },
                     text = historyEntry.notificationText ?: historyEntry.messageBody
                 )
             }

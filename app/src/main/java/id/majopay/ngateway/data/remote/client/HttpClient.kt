@@ -2,14 +2,13 @@ package id.majopay.ngateway.data.remote.client
 
 import com.google.gson.Gson
 import id.majopay.ngateway.data.remote.api.ForwardingApiService
-import id.majopay.ngateway.domain.model.SmsMessage
 import kotlinx.coroutines.delay
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * HTTP client for forwarding SMS messages and notifications to external APIs.
+ * HTTP client for forwarding notifications to external APIs.
  * Handles retry logic and different HTTP methods.
  *
  * Exposes payload + header builders so the caller can persist the exact bytes that will
@@ -26,12 +25,6 @@ class HttpClient @Inject constructor(
         private const val INITIAL_RETRY_DELAY = 1000L
         private const val RETRY_MULTIPLIER = 2L
     }
-
-    /**
-     * Build the canonical JSON payload for an SMS forward.
-     */
-    fun buildSmsPayloadJson(smsMessage: SmsMessage): String =
-        gson.toJson(smsMessage.toApiPayload())
 
     /**
      * Build the canonical JSON payload for a notification forward.
@@ -170,7 +163,7 @@ class HttpClient @Inject constructor(
 }
 
 /**
- * Result of a forwarding attempt (SMS or notification).
+ * Result of a forwarding attempt.
  */
 sealed class ForwardingResult {
     data class Success(

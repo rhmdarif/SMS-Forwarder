@@ -114,7 +114,7 @@ val NeutralGrayDark = Color(0xFFCBD5E1)
 val NeutralGrayDarkBg = Color(0xFF334155)
 
 // ---------- Aksen ramah untuk ikon/ilustrasi ----------
-// Dipakai untuk membedakan kategori (SMS vs notifikasi, izin, dsb.) agar UI terasa hangat.
+// Dipakai untuk membedakan kategori (status, izin, dsb.) agar UI terasa hangat.
 val AccentTeal = Color(0xFF0D9488)
 val AccentTealLight = Color(0xFFCCFBF1)
 val AccentTealDark = Color(0xFF5EEAD4)

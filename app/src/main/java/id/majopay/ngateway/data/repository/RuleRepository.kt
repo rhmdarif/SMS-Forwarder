@@ -12,7 +12,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Repository for managing SMS forwarding rules.
+ * Repository for managing forwarding rules.
  * Provides a clean API for rule CRUD operations.
  */
 @Singleton

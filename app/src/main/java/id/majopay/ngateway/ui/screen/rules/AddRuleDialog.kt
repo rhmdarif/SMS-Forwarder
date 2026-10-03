@@ -19,8 +19,6 @@ import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.NotificationsActive
-import androidx.compose.material.icons.outlined.Sms
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,11 +42,9 @@ import androidx.compose.ui.window.DialogProperties
 import id.majopay.ngateway.domain.model.Rule
 import id.majopay.ngateway.domain.model.SourceType
 import id.majopay.ngateway.ui.component.AppTextField
-import id.majopay.ngateway.ui.component.FieldLabel
 import id.majopay.ngateway.ui.component.IconBubble
 import id.majopay.ngateway.ui.component.InfoBanner
 import id.majopay.ngateway.ui.component.PrimaryButton
-import id.majopay.ngateway.ui.component.SelectablePill
 import id.majopay.ngateway.ui.component.SoftBlock
 import id.majopay.ngateway.ui.component.ToggleRow
 import id.majopay.ngateway.ui.component.TonalButton
@@ -67,14 +63,13 @@ fun AddRuleDialog(
     var name by remember { mutableStateOf(ruleToEdit?.name ?: "") }
     var pattern by remember { mutableStateOf(ruleToEdit?.pattern ?: "") }
     var isRegex by remember { mutableStateOf(ruleToEdit?.isRegex ?: false) }
-    var sourceType by remember { mutableStateOf(ruleToEdit?.source ?: SourceType.SMS) }
     var packageFilter by remember { mutableStateOf(ruleToEdit?.packageFilter ?: "") }
     var usePackageFilter by remember { mutableStateOf(ruleToEdit?.packageFilter != null) }
     var selectedAppName by remember { mutableStateOf(ruleToEdit?.packageFilter ?: "") }
     var showAppPicker by remember { mutableStateOf(false) }
 
     val isValid = name.isNotBlank() && pattern.isNotBlank() &&
-        (sourceType == SourceType.SMS || !usePackageFilter || packageFilter.isNotBlank())
+        (!usePackageFilter || packageFilter.isNotBlank())
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -108,7 +103,7 @@ fun AddRuleDialog(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "Pilih sumber pesan dan pola yang mau kamu tangkap.",
+                            text = "Tentukan pola notifikasi yang mau kamu tangkap.",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -124,38 +119,12 @@ fun AddRuleDialog(
 
                 Spacer(modifier = Modifier.height(18.dp))
 
-                // Sumber pesan
-                FieldLabel("Sumber pesan")
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    SelectablePill(
-                        text = "SMS",
-                        icon = Icons.Outlined.Sms,
-                        selected = sourceType == SourceType.SMS,
-                        onClick = { sourceType = SourceType.SMS },
-                        tone = Tone.Primary,
-                        modifier = Modifier.weight(1f)
-                    )
-                    SelectablePill(
-                        text = "Notifikasi",
-                        icon = Icons.Outlined.NotificationsActive,
-                        selected = sourceType == SourceType.NOTIFICATION,
-                        onClick = { sourceType = SourceType.NOTIFICATION },
-                        tone = Tone.Purple,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
                 // Nama aturan
                 AppTextField(
                     value = name,
                     onValueChange = { name = it },
                     label = "Nama aturan",
-                    placeholder = "Contoh: OTP Bank ABC",
+                    placeholder = "Contoh: Pesanan masuk",
                     singleLine = true
                 )
 
@@ -166,10 +135,7 @@ fun AddRuleDialog(
                     value = pattern,
                     onValueChange = { pattern = it },
                     label = "Pola yang dicari",
-                    placeholder = if (sourceType == SourceType.SMS)
-                        "Contoh: 'OTP' atau '[0-9]{6}' untuk regex"
-                    else
-                        "Contoh: 'pesan baru' atau 'WhatsApp.*' untuk regex",
+                    placeholder = "Contoh: 'pesan baru' atau 'WhatsApp.*' untuk regex",
                     singleLine = false,
                     minLines = 2
                 )
@@ -187,26 +153,24 @@ fun AddRuleDialog(
                     }
                 }
 
-                if (sourceType == SourceType.NOTIFICATION) {
-                    Spacer(modifier = Modifier.height(10.dp))
-                    SoftBlock {
-                        ToggleRow(
-                            title = "Filter per aplikasi",
-                            subtitle = "Hanya tangkap notifikasi dari satu aplikasi tertentu.",
-                            icon = Icons.Outlined.FilterAlt,
-                            tone = Tone.Purple
-                        ) {
-                            FlatSwitch(checked = usePackageFilter, onChange = { usePackageFilter = it })
-                        }
+                Spacer(modifier = Modifier.height(10.dp))
+                SoftBlock {
+                    ToggleRow(
+                        title = "Filter per aplikasi",
+                        subtitle = "Hanya tangkap notifikasi dari satu aplikasi tertentu.",
+                        icon = Icons.Outlined.FilterAlt,
+                        tone = Tone.Purple
+                    ) {
+                        FlatSwitch(checked = usePackageFilter, onChange = { usePackageFilter = it })
+                    }
 
-                        if (usePackageFilter) {
-                            Spacer(modifier = Modifier.height(10.dp))
-                            AppPickerButton(
-                                appName = selectedAppName.ifEmpty { "Pilih aplikasi" },
-                                packageName = packageFilter,
-                                onClick = { showAppPicker = true }
-                            )
-                        }
+                    if (usePackageFilter) {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        AppPickerButton(
+                            appName = selectedAppName.ifEmpty { "Pilih aplikasi" },
+                            packageName = packageFilter,
+                            onClick = { showAppPicker = true }
+                        )
                     }
                 }
 
@@ -243,8 +207,8 @@ fun AddRuleDialog(
                                 pattern = pattern.trim(),
                                 isRegex = isRegex,
                                 isActive = ruleToEdit?.isActive ?: true,
-                                source = sourceType,
-                                packageFilter = if (sourceType == SourceType.NOTIFICATION && usePackageFilter) {
+                                source = SourceType.NOTIFICATION,
+                                packageFilter = if (usePackageFilter) {
                                     packageFilter.trim().takeIf { it.isNotBlank() }
                                 } else null,
                                 createdAt = ruleToEdit?.createdAt ?: now,

@@ -20,7 +20,7 @@ import javax.inject.Singleton
 object DatabaseModule {
     
     /**
-     * Provide the SMS Forwarder database instance.
+     * Provide the Room database instance.
      */
     @Provides
     @Singleton
@@ -30,6 +30,7 @@ object DatabaseModule {
             SmsForwarderDatabase::class.java,
             SmsForwarderDatabase.DATABASE_NAME
         )
+            .addMigrations(SmsForwarderDatabase.MIGRATION_4_5)
             .fallbackToDestructiveMigration()
             .build()
     }

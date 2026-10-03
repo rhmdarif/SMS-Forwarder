@@ -10,7 +10,7 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import com.google.gson.Gson
-import id.majopay.ngateway.domain.usecase.SmsForwardingUseCase
+import id.majopay.ngateway.domain.usecase.ForwardingUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,7 +77,7 @@ class NotifRouterService : NotificationListenerService() {
     }
     
     @Inject
-    lateinit var forwardingUseCase: SmsForwardingUseCase
+    lateinit var forwardingUseCase: ForwardingUseCase
 
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val gson = Gson()

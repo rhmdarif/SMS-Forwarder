@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.majopay.ngateway.domain.model.ForwardingStatus
 import id.majopay.ngateway.domain.model.ForwardingHistory
-import id.majopay.ngateway.domain.usecase.SmsForwardingUseCase
+import id.majopay.ngateway.domain.usecase.ForwardingUseCase
 import id.majopay.ngateway.data.repository.HistoryRepository
 import id.majopay.ngateway.data.local.dao.AppInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
     private val historyRepository: HistoryRepository,
-    private val smsForwardingUseCase: SmsForwardingUseCase
+    private val forwardingUseCase: ForwardingUseCase
 ) : ViewModel() {
     
     companion object {
@@ -300,7 +300,7 @@ class HistoryViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val updated = smsForwardingUseCase.resendHistory(entry)
+                val updated = forwardingUseCase.resendHistory(entry)
                 val newList = _uiState.value.history.map { item ->
                     if (item.id == updated.id) updated else item
                 }

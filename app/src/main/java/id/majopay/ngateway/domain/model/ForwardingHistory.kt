@@ -10,19 +10,19 @@ enum class StatusColor {
 }
 
 /**
- * Domain model representing a forwarding attempt history log for SMS or notifications.
+ * Domain model representing a forwarding attempt history log for notifications.
  * This is the business logic representation, separate from database entities.
  * 
  * @property id Unique identifier for the history entry
  * @property ruleId Reference to the rule that triggered this forwarding (null if no rule matched)
  * @property matchedRule Whether this message/notification matched any forwarding rule
- * @property senderNumber The sender phone number (for SMS only, null for notifications)
- * @property messageBody The message content (SMS body or notification text)
- * @property sourceType Source type - "SMS" or "NOTIFICATION"
- * @property sourcePackage Package name (for notifications only, null for SMS)
- * @property sourceAppName App name (for notifications only, null for SMS)
- * @property notificationTitle Notification title (for notifications only, null for SMS)
- * @property notificationText Notification text (for notifications only, null for SMS)
+ * @property senderNumber Legacy: nomor pengirim SMS (sumber SMS sudah dihapus, selalu null)
+ * @property messageBody The message content (notification text)
+ * @property sourceType Source type - "NOTIFICATION"
+ * @property sourcePackage Package name (for notifications)
+ * @property sourceAppName App name (for notifications)
+ * @property notificationTitle Notification title (for notifications)
+ * @property notificationText Notification text (for notifications)
  * @property endpoint The HTTP endpoint used for forwarding
  * @property method The HTTP method used for forwarding
  * @property requestHeaders Map of request headers
@@ -39,12 +39,12 @@ data class ForwardingHistory(
     val ruleId: Long? = null, // Nullable to support non-matching messages
     val matchedRule: Boolean = false, // Whether message matched any rule
     
-    // SMS-specific fields
-    val senderNumber: String? = null, // Phone number for SMS, null for notifications
-    val messageBody: String, // SMS body or notification content
+    // Legacy (sumber SMS sudah dihapus)
+    val senderNumber: String? = null, // Selalu null untuk data baru
+    val messageBody: String, // Notification content
     
     // Source information
-    val sourceType: String, // "SMS" or "NOTIFICATION"
+    val sourceType: String, // "NOTIFICATION"
     val sourcePackage: String? = null, // Package name for notifications
     val sourceAppName: String? = null, // App name for notifications
     
@@ -158,12 +158,11 @@ data class ForwardingHistory(
     /**
      * Get the source display name for UI.
      * 
-     * @return Source display name (app name for notifications, phone number for SMS)
+     * @return Source display name (app name for notifications)
      */
     fun getSourceDisplayName(): String {
         return when (sourceType) {
             "NOTIFICATION" -> sourceAppName ?: sourcePackage ?: "Unknown App"
-            "SMS" -> senderNumber ?: "Unknown Number"
             else -> "Unknown Source"
         }
     }
@@ -185,7 +184,6 @@ data class ForwardingHistory(
                     title.ifEmpty { text }
                 }
             }
-            "SMS" -> messageBody
             else -> messageBody
         }
         
@@ -195,13 +193,6 @@ data class ForwardingHistory(
             content.take(maxLength - 3) + "..."
         }
     }
-    
-    /**
-     * Check if this is an SMS forwarding entry.
-     * 
-     * @return true if this is SMS, false otherwise
-     */
-    fun isSms(): Boolean = sourceType == "SMS"
     
     /**
      * Check if this is a notification forwarding entry.

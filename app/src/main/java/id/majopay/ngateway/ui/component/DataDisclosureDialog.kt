@@ -15,7 +15,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.NotificationsActive
-import androidx.compose.material.icons.outlined.Sms
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -34,7 +33,7 @@ import id.majopay.ngateway.ui.theme.colors
 
 /**
  * Jenis akses data sensitif yang butuh "prominent disclosure" ala Google Play
- * sebelum izin sistem diminta.
+ * sebelum akses diaktifkan.
  */
 enum class SensitiveAccess(
     val title: String,
@@ -43,20 +42,6 @@ enum class SensitiveAccess(
     val intro: String,
     val points: List<String>
 ) {
-    Sms(
-        title = "Sebelum kamu mengizinkan akses SMS",
-        icon = Icons.Outlined.Sms,
-        tone = Tone.Primary,
-        intro = "Majopay Gateway membaca SMS yang masuk ke perangkat ini untuk mendeteksi pesan " +
-            "dari pengirim yang kamu pantau. Berikut yang perlu kamu tahu:",
-        points = listOf(
-            "Yang dibaca: nomor pengirim dan isi SMS masuk.",
-            "Tujuannya: mencocokkan SMS dengan aturan yang kamu buat, misalnya SMS dari pengirim tertentu.",
-            "Yang dikirim keluar: hanya SMS yang cocok dengan aturan, lewat HTTPS ke relay api-proxy.majopay.id yang meneruskannya ke aplikasi/endpoint milikmu.",
-            "Semua SMS yang diproses, termasuk yang tidak cocok, dicatat di Riwayat dan hanya tersimpan di perangkat ini.",
-            "Akses ini bisa kamu cabut kapan saja lewat pengaturan Android."
-        )
-    ),
     Notification(
         title = "Sebelum kamu mengaktifkan akses notifikasi",
         icon = Icons.Outlined.NotificationsActive,
